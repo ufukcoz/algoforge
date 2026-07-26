@@ -1,0 +1,11 @@
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\bin\Debug\net8.0\AlgoForge.Domain.deps.json
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\bin\Debug\net8.0\AlgoForge.Domain.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\bin\Debug\net8.0\AlgoForge.Domain.pdb
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.AssemblyInfoInputs.cache
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.AssemblyInfo.cs
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.csproj.CoreCompileInputs.cache
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\refint\AlgoForge.Domain.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.pdb
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\ref\AlgoForge.Domain.dll
