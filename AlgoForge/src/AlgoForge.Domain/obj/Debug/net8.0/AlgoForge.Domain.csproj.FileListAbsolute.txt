@@ -9,3 +9,4 @@ C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\refint\AlgoForge.Domain.dll
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.pdb
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\ref\AlgoForge.Domain.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Domain\obj\Debug\net8.0\AlgoForge.Domain.sourcelink.json

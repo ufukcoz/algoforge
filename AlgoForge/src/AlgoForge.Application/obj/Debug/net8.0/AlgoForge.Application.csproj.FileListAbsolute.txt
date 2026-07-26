@@ -13,3 +13,4 @@ C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Applica
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Application\obj\Debug\net8.0\refint\AlgoForge.Application.dll
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Application\obj\Debug\net8.0\AlgoForge.Application.pdb
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Application\obj\Debug\net8.0\ref\AlgoForge.Application.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Application\obj\Debug\net8.0\AlgoForge.Application.sourcelink.json

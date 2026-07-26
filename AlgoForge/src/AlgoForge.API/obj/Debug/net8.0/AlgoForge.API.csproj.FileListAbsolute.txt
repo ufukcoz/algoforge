@@ -128,3 +128,4 @@ C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.API\obj
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.API\obj\Debug\net8.0\AlgoForge.API.pdb
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.API\obj\Debug\net8.0\AlgoForge.API.genruntimeconfig.cache
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.API\obj\Debug\net8.0\ref\AlgoForge.API.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.API\obj\Debug\net8.0\AlgoForge.API.sourcelink.json

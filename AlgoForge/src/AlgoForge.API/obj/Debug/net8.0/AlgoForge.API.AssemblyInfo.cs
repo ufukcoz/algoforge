@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AlgoForge.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d6010c58e1d81106a8588b53b627e7b9ab56b824")]
 [assembly: System.Reflection.AssemblyProductAttribute("AlgoForge.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AlgoForge.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

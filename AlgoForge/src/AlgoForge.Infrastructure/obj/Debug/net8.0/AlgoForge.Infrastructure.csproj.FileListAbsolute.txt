@@ -17,3 +17,4 @@ C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Infrast
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Infrastructure\obj\Debug\net8.0\AlgoForge.Infrastructure.pdb
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Infrastructure\obj\Debug\net8.0\AlgoForge.Infrastructure.genruntimeconfig.cache
 C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Infrastructure\obj\Debug\net8.0\ref\AlgoForge.Infrastructure.dll
+C:\Users\hp\Downloads\AlgoForge-backend-skeleton\AlgoForge\src\AlgoForge.Infrastructure\obj\Debug\net8.0\AlgoForge.Infrastructure.sourcelink.json
