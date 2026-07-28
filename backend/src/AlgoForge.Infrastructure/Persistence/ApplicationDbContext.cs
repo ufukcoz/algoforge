@@ -9,6 +9,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Question> Questions => Set<Question>();
+    public DbSet<TestCase> TestCases => Set<TestCase>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
