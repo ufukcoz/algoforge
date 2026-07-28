@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getQuestionById, type QuestionDetail } from '../api/client';
+import CodeEditorPanel from '../components/CodeEditorPanel';
 
 interface QuestionDetailPageProps {
   questionId: string;
@@ -66,11 +67,7 @@ export default function QuestionDetailPage({ questionId, onBack }: QuestionDetai
               </div>
             ))}
 
-            <div style={styles.editorPlaceholder}>
-              <p style={styles.editorPlaceholderText}>
-                // kod editoru burada olacak (Sprint 3)
-              </p>
-            </div>
+            <CodeEditorPanel />
           </>
         )}
       </main>
