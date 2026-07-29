@@ -1,4 +1,5 @@
 using AlgoForge.Application.Questions.Commands.CreateQuestion;
+using AlgoForge.Application.Questions.Commands.RunCode;
 using AlgoForge.Application.Questions.Queries.GetQuestionById;
 using AlgoForge.Application.Questions.Queries.GetQuestions;
 using AlgoForge.Domain.Enums;
@@ -47,4 +48,16 @@ public class QuestionsController : ControllerBase
         var id = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetQuestionById), new { id }, id);
     }
+
+    // [Authorize] ile korunuyor: Judge0/RapidAPI ucretsiz katmani sinirli oldugu icin
+    // anonim kullanicilarin bu endpoint'i suistimal etmesini engellemek gerekiyor.
+    [HttpPost("{id:guid}/run")]
+    [Authorize]
+    public async Task<ActionResult<RunCodeResult>> RunCode(Guid id, RunCodeRequest request)
+    {
+        var result = await _mediator.Send(new RunCodeCommand(id, request.Language, request.SourceCode));
+        return Ok(result);
+    }
 }
+
+public record RunCodeRequest(string Language, string SourceCode);

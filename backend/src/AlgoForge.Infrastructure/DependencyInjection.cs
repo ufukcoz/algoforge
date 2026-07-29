@@ -18,6 +18,24 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
+        // Judge0 icin HttpClient. Varsayilan olarak ce.judge0.com (resmi, ucretsiz,
+        // kimlik dogrulama gerektirmeyen genel deneme sunucusu) kullanilir.
+        // RapidApi:ApiKey doldurulursa RapidAPI uzerinden barindirilan surume gecilir.
+        services.AddHttpClient<IJudgeService, Judge0RapidApiService>(client =>
+        {
+            var judge0Settings = configuration.GetSection("Judge0");
+            var baseUrl = judge0Settings["BaseUrl"] ?? "https://ce.judge0.com/";
+            client.BaseAddress = new Uri(baseUrl);
+            client.Timeout = TimeSpan.FromSeconds(30);
+
+            var rapidApiKey = judge0Settings["RapidApiKey"];
+            if (!string.IsNullOrWhiteSpace(rapidApiKey))
+            {
+                client.DefaultRequestHeaders.Add("X-RapidAPI-Key", rapidApiKey);
+                client.DefaultRequestHeaders.Add("X-RapidAPI-Host", judge0Settings["RapidApiHost"] ?? "judge0-ce.p.rapidapi.com");
+            }
+        });
+
         return services;
     }
 }
