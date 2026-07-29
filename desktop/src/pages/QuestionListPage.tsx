@@ -5,7 +5,6 @@ import {
   type Category,
   type QuestionSummary,
 } from '../api/client';
-import { useAuth } from '../context/AuthContext';
 
 const DIFFICULTIES = ['Easy', 'Medium', 'Hard'] as const;
 
@@ -14,7 +13,6 @@ interface QuestionListPageProps {
 }
 
 export default function QuestionListPage({ onSelectQuestion }: QuestionListPageProps) {
-  const { username, logout } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
   const [questions, setQuestions] = useState<QuestionSummary[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -50,19 +48,6 @@ export default function QuestionListPage({ onSelectQuestion }: QuestionListPageP
 
   return (
     <div style={styles.page}>
-      <header style={styles.header}>
-        <div style={styles.brand}>
-          <span style={styles.brandMark}>{'</>'}</span>
-          <span style={styles.brandName}>AlgoForge</span>
-        </div>
-        <div style={styles.headerRight}>
-          <span style={styles.username}>{username}</span>
-          <button type="button" onClick={logout} style={styles.logoutButton}>
-            Cikis yap
-          </button>
-        </div>
-      </header>
-
       <div style={styles.body}>
         <aside style={styles.sidebar}>
           <p style={styles.sidebarLabel}>// kategori</p>

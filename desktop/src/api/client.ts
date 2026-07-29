@@ -189,3 +189,37 @@ export async function submitCode(
   });
   return handleResponse<SubmissionResult>(response);
 }
+
+// ---- Profile ve Leaderboard ----
+
+export interface ProfileData {
+  username: string;
+  email: string;
+  xp: number;
+  level: number;
+  country: string | null;
+  university: string | null;
+  memberSince: string;
+  totalSubmissions: number;
+  acceptedSubmissions: number;
+  questionsSolved: number;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  username: string;
+  xp: number;
+  level: number;
+}
+
+export async function getProfile(accessToken: string): Promise<ProfileData> {
+  const response = await fetch(`${API_BASE_URL}/profile`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  return handleResponse<ProfileData>(response);
+}
+
+export async function getLeaderboard(top: number = 50): Promise<LeaderboardEntry[]> {
+  const response = await fetch(`${API_BASE_URL}/leaderboard?top=${top}`);
+  return handleResponse<LeaderboardEntry[]>(response);
+}
