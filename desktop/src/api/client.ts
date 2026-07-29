@@ -129,3 +129,63 @@ export async function getQuestionById(id: string): Promise<QuestionDetail> {
   const response = await fetch(`${API_BASE_URL}/questions/${id}`);
   return handleResponse<QuestionDetail>(response);
 }
+
+// ---- Judge0 - kod calistirma ve gonderme ----
+
+export interface TestCaseRunResult {
+  input: string;
+  expectedOutput: string;
+  actualOutput: string | null;
+  passed: boolean;
+  stderr: string | null;
+  compileOutput: string | null;
+  runtimeMs: number | null;
+}
+
+export interface RunCodeResult {
+  allPassed: boolean;
+  results: TestCaseRunResult[];
+}
+
+export interface SubmissionResult {
+  submissionId: string;
+  status: string;
+  passedCount: number;
+  totalCount: number;
+  runtimeMs: number | null;
+  memoryKb: number | null;
+}
+
+export async function runCode(
+  questionId: string,
+  language: string,
+  sourceCode: string,
+  accessToken: string
+): Promise<RunCodeResult> {
+  const response = await fetch(`${API_BASE_URL}/questions/${questionId}/run`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ language, sourceCode }),
+  });
+  return handleResponse<RunCodeResult>(response);
+}
+
+export async function submitCode(
+  questionId: string,
+  language: string,
+  sourceCode: string,
+  accessToken: string
+): Promise<SubmissionResult> {
+  const response = await fetch(`${API_BASE_URL}/submissions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ questionId, language, sourceCode }),
+  });
+  return handleResponse<SubmissionResult>(response);
+}

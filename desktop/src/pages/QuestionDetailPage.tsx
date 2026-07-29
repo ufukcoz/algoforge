@@ -67,7 +67,7 @@ export default function QuestionDetailPage({ questionId, onBack }: QuestionDetai
               </div>
             ))}
 
-            <CodeEditorPanel />
+            <CodeEditorPanel questionId={questionId} />
           </>
         )}
       </main>

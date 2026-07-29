@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace AlgoForge.Infrastructure.Services;
 
@@ -51,7 +52,11 @@ public class Judge0RapidApiService : IJudgeService
 
         var requestBody = new Judge0SubmissionRequest
         {
-            SourceCode = sourceCode,
+            // Judge0'in Java calistiricisi dosyayi "Main.java" olarak kaydedip
+            // "java Main" ile calistirir - yani public sinif adi mutlaka "Main" olmali.
+            // Kullanicinin kendi sinif adini (orn. "Solution") kullanabilmesi icin
+            // burada seffafca "Main"e ceviriyoruz; veritabanina kaydedilen orijinal kod degismez.
+            SourceCode = language.ToLowerInvariant() == "java" ? NormalizeJavaClassName(sourceCode) : sourceCode,
             LanguageId = languageId,
             Stdin = stdin,
             ExpectedOutput = expectedOutput,
@@ -153,6 +158,31 @@ public class Judge0RapidApiService : IJudgeService
         }
 
         return null;
+    }
+
+    // Java kodundaki "public class X" (veya sadece "class X") tanimini bulup
+    // X'i "Main" ile degistirir - hem tanimda hem de kod icindeki tum referanslarinda
+    // (orn. "new X()" gibi kurucu cagrilari), boylece kullanici istedigi sinif adini
+    // kullanabilir. Birden fazla ust-duzey sinif varsa sadece ilk (public olan varsa o) sinif
+    // yeniden adlandirilir - basit tek-sinifli cozumler icin yeterlidir.
+    private static string NormalizeJavaClassName(string sourceCode)
+    {
+        var match = Regex.Match(sourceCode, @"public\s+class\s+(\w+)");
+        if (!match.Success)
+        {
+            match = Regex.Match(sourceCode, @"\bclass\s+(\w+)");
+        }
+
+        if (!match.Success)
+            return sourceCode;
+
+        var originalClassName = match.Groups[1].Value;
+        if (originalClassName == "Main")
+            return sourceCode;
+
+        // \b ile tam kelime eslesmesi yapiyoruz ki "Solution" gibi bir isim baska
+        // bir kelimenin (orn. "SolutionHelper") parcasi olarak yanlislikla degistirilmesin.
+        return Regex.Replace(sourceCode, $@"\b{Regex.Escape(originalClassName)}\b", "Main");
     }
 
     private class Judge0SubmissionRequest
