@@ -71,6 +71,25 @@ public class CreateSubmissionCommandHandler : IRequestHandler<CreateSubmissionCo
             overallStatus = SubmissionStatus.InternalError;
 
         submission.MarkResult(overallStatus, maxRuntimeMs, maxMemoryKb);
+
+        // XP sadece bir soru ILK KEZ basariyla cozuldugunde verilir - ayni soruyu
+        // tekrar tekrar gonderip XP farmlamayi engellemek icin, daha once bu kullanicinin
+        // bu soruya Accepted bir submission'i var mi kontrol ediyoruz.
+        if (overallStatus == SubmissionStatus.Accepted)
+        {
+            var alreadySolvedBefore = await _context.Submissions
+                .AnyAsync(s => s.UserId == request.UserId
+                               && s.QuestionId == request.QuestionId
+                               && s.Status == SubmissionStatus.Accepted,
+                    cancellationToken);
+
+            if (!alreadySolvedBefore)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
+                user?.AddXp(GetXpReward(question.Difficulty));
+            }
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return new SubmissionResultDto(
@@ -82,6 +101,15 @@ public class CreateSubmissionCommandHandler : IRequestHandler<CreateSubmissionCo
             maxMemoryKb
         );
     }
+
+    // Zorluk seviyesine gore XP odulu. Ileride konfigurasyona tasinabilir.
+    private static int GetXpReward(Difficulty difficulty) => difficulty switch
+    {
+        Difficulty.Easy => 10,
+        Difficulty.Medium => 25,
+        Difficulty.Hard => 50,
+        _ => 10,
+    };
 
     private static SubmissionStatus MapToStatus(string judge0StatusDescription)
     {
