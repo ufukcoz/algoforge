@@ -223,3 +223,96 @@ export async function getLeaderboard(top: number = 50): Promise<LeaderboardEntry
   const response = await fetch(`${API_BASE_URL}/leaderboard?top=${top}`);
   return handleResponse<LeaderboardEntry[]>(response);
 }
+
+// ---- Contest sistemi ----
+
+export interface ContestSummary {
+  id: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  isPublic: boolean;
+  participantCount: number;
+  questionCount: number;
+  status: 'Upcoming' | 'Active' | 'Ended';
+  isJoined: boolean;
+}
+
+export interface ContestQuestionItem {
+  questionId: string;
+  title: string;
+  difficulty: string;
+  points: number;
+  orderIndex: number;
+}
+
+export interface ContestDetail {
+  id: string;
+  title: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  isPublic: boolean;
+  inviteCode: string | null;
+  status: 'Upcoming' | 'Active' | 'Ended';
+  isJoined: boolean;
+  participantCount: number;
+  questions: ContestQuestionItem[];
+}
+
+export interface ContestLeaderboardEntry {
+  rank: number;
+  username: string;
+  totalPoints: number;
+  solvedCount: number;
+  totalPenaltySeconds: number;
+}
+
+export async function getContests(accessToken: string): Promise<ContestSummary[]> {
+  const response = await fetch(`${API_BASE_URL}/contests`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  return handleResponse<ContestSummary[]>(response);
+}
+
+export async function getContestById(id: string, accessToken: string): Promise<ContestDetail> {
+  const response = await fetch(`${API_BASE_URL}/contests/${id}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  return handleResponse<ContestDetail>(response);
+}
+
+export async function joinContest(
+  id: string,
+  inviteCode: string | null,
+  accessToken: string
+): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/contests/${id}/join`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ inviteCode }),
+  });
+  if (!response.ok) {
+    let message = 'Yarismaya katilinamadi.';
+    try {
+      const body = await response.json();
+      message = body?.title ?? body?.message ?? message;
+    } catch {
+      // JSON gövde yoksa varsayılan mesajı kullan
+    }
+    throw new Error(message);
+  }
+}
+
+export async function getContestLeaderboard(
+  id: string,
+  accessToken: string
+): Promise<ContestLeaderboardEntry[]> {
+  const response = await fetch(`${API_BASE_URL}/contests/${id}/leaderboard`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  return handleResponse<ContestLeaderboardEntry[]>(response);
+}

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-export type View = 'questions' | 'profile' | 'leaderboard';
+export type View = 'questions' | 'contests' | 'profile' | 'leaderboard';
 
 interface AppShellProps {
   activeView: View;
@@ -11,6 +11,7 @@ interface AppShellProps {
 
 const NAV_ITEMS: { id: View; label: string }[] = [
   { id: 'questions', label: 'Sorular' },
+  { id: 'contests', label: 'Yarismalar' },
   { id: 'leaderboard', label: 'Liderlik Tablosu' },
   { id: 'profile', label: 'Profil' },
 ];
