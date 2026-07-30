@@ -10,5 +10,8 @@ public interface IApplicationDbContext
     DbSet<Question> Questions { get; }
     DbSet<TestCase> TestCases { get; }
     DbSet<Submission> Submissions { get; }
+    DbSet<Contest> Contests { get; }
+    DbSet<ContestQuestion> ContestQuestions { get; }
+    DbSet<ContestParticipant> ContestParticipants { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

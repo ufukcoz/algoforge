@@ -13,6 +13,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Question> Questions => Set<Question>();
     public DbSet<TestCase> TestCases => Set<TestCase>();
     public DbSet<Submission> Submissions => Set<Submission>();
+    public DbSet<Contest> Contests => Set<Contest>();
+    public DbSet<ContestQuestion> ContestQuestions => Set<ContestQuestion>();
+    public DbSet<ContestParticipant> ContestParticipants => Set<ContestParticipant>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
