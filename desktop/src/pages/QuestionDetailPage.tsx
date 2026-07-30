@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getQuestionById, type QuestionDetail } from '../api/client';
 import CodeEditorPanel from '../components/CodeEditorPanel';
+import AiAssistantPanel from '../components/AiAssistantPanel';
 
 interface QuestionDetailPageProps {
   questionId: string;
@@ -11,6 +12,8 @@ export default function QuestionDetailPage({ questionId, onBack }: QuestionDetai
   const [question, setQuestion] = useState<QuestionDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentCode, setCurrentCode] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState('javascript');
 
   useEffect(() => {
     setIsLoading(true);
@@ -67,7 +70,19 @@ export default function QuestionDetailPage({ questionId, onBack }: QuestionDetai
               </div>
             ))}
 
-            <CodeEditorPanel questionId={questionId} />
+            <CodeEditorPanel
+              questionId={questionId}
+              onCodeStateChange={(code, language) => {
+                setCurrentCode(code);
+                setCurrentLanguage(language);
+              }}
+            />
+
+            <AiAssistantPanel
+              questionId={questionId}
+              code={currentCode}
+              language={currentLanguage}
+            />
           </>
         )}
       </main>

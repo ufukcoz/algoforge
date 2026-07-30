@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { runCode, submitCode, type RunCodeResult, type SubmissionResult } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -22,9 +22,10 @@ const DEFAULT_SNIPPETS: Record<string, string> = {
 
 interface CodeEditorPanelProps {
   questionId: string;
+  onCodeStateChange?: (code: string, language: string) => void;
 }
 
-export default function CodeEditorPanel({ questionId }: CodeEditorPanelProps) {
+export default function CodeEditorPanel({ questionId, onCodeStateChange }: CodeEditorPanelProps) {
   const { accessToken } = useAuth();
   const [language, setLanguage] = useState<string>('javascript');
   const [codeByLanguage, setCodeByLanguage] = useState<Record<string, string>>({
@@ -37,6 +38,11 @@ export default function CodeEditorPanel({ questionId }: CodeEditorPanelProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const currentCode = codeByLanguage[language];
+
+  // AI Assistant panelinin her zaman guncel kodu/dili gorebilmesi icin ust bilesene bildiriyoruz.
+  useEffect(() => {
+    onCodeStateChange?.(currentCode, language);
+  }, [currentCode, language, onCodeStateChange]);
 
   const handleRun = async () => {
     if (!accessToken) return;

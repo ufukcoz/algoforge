@@ -316,3 +316,26 @@ export async function getContestLeaderboard(
   });
   return handleResponse<ContestLeaderboardEntry[]>(response);
 }
+
+// ---- AI Assistant ----
+
+export type AiAssistAction = 'Hint' | 'ComplexityAnalysis' | 'ExplainBug' | 'ExplainCode' | 'SuggestSolution';
+
+export async function getAiAssistance(
+  questionId: string,
+  code: string,
+  language: string,
+  action: AiAssistAction,
+  accessToken: string
+): Promise<string> {
+  const response = await fetch(`${API_BASE_URL}/ai/assist`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ questionId, code, language, action }),
+  });
+  const data = await handleResponse<{ message: string }>(response);
+  return data.message;
+}

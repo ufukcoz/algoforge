@@ -36,6 +36,13 @@ public static class DependencyInjection
             }
         });
 
+        // Gemini API icin HttpClient - Google AI Studio'nun ucretsiz katmani, kredi karti gerektirmez.
+        services.AddHttpClient<IAiAssistantService, GeminiAiAssistantService>(client =>
+        {
+            client.BaseAddress = new Uri("https://generativelanguage.googleapis.com/");
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
         return services;
     }
 }
