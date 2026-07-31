@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: algoforge
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - algoforge_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "5000:8080"
+    environment:
+      # Container icinden postgres'e "postgres" servis adiyla erisiliyor, "localhost" degil -
+      # Docker'in kendi ic aginda servisler birbirini container adiyla bulur.
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=algoforge;Username=postgres;Password=postgres"
+      Jwt__Secret: "CHANGE_THIS_TO_A_LONG_RANDOM_SECRET_BEFORE_RUNNING"
+      Jwt__Issuer: "AlgoForge.API"
+      Jwt__Audience: "AlgoForge.Client"
+      Judge0__BaseUrl: "https://ce.judge0.com/"
+      Gemini__ApiKey: "${GEMINI_API_KEY:-}"
+      Gemini__Model: "gemini-flash-latest"
+      ASPNETCORE_ENVIRONMENT: "Development"
+
+volumes:
+  algoforge_postgres_data:

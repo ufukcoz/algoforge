@@ -12,7 +12,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(NormalizeConnectionString(configuration.GetConnectionString("DefaultConnection"))));
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IJwtService, JwtService>();
@@ -44,5 +44,27 @@ public static class DependencyInjection
         });
 
         return services;
+    }
+
+    // Render, Heroku ve bazi diger platformlar PostgreSQL baglanti bilgisini
+    // "postgres://user:pass@host:port/dbname" seklinde (URI formati) veriyor,
+    // ama Npgsql "Host=...;Username=...;Password=...;Database=..." formatini bekliyor.
+    // Bu metod, hangisi verilirse verilsin dogru formata cevirir - boylece local'de
+    // (Host=... formati) ve Render'da (postgres:// formati) ayni kod calisir.
+    private static string? NormalizeConnectionString(string? connectionString)
+    {
+        if (string.IsNullOrWhiteSpace(connectionString))
+            return connectionString;
+
+        if (!connectionString.StartsWith("postgres://") && !connectionString.StartsWith("postgresql://"))
+            return connectionString; // zaten Npgsql formatinda, dokunma
+
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo.Split(':', 2);
+
+        return $"Host={uri.Host};Port={(uri.Port > 0 ? uri.Port : 5432)};" +
+               $"Database={uri.AbsolutePath.TrimStart('/')};" +
+               $"Username={userInfo[0]};Password={userInfo[1]};" +
+               "SSL Mode=Require;Trust Server Certificate=true";
     }
 }

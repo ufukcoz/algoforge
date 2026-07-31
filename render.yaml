@@ -1,0 +1,34 @@
+databases:
+  - name: algoforge-db
+    plan: free
+    databaseName: algoforge
+    user: algoforge
+
+services:
+  - type: web
+    name: algoforge-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: algoforge-db
+          property: connectionString
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # Bu ikisi Render dashboard'unda elle girilmeli (sync: false = Render bunlari
+      # otomatik doldurmaz, senden ister) - gizli degerleri repo'ya yazmamak icin.
+      - key: Jwt__Secret
+        sync: false
+      - key: Gemini__ApiKey
+        sync: false
+      - key: Jwt__Issuer
+        value: AlgoForge.API
+      - key: Jwt__Audience
+        value: AlgoForge.Client
+      - key: Judge0__BaseUrl
+        value: https://ce.judge0.com/
+      - key: Gemini__Model
+        value: gemini-flash-latest
