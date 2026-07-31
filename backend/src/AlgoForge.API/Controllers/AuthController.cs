@@ -1,4 +1,6 @@
 using AlgoForge.Application.Auth.Commands.Login;
+using AlgoForge.Application.Auth.Commands.Logout;
+using AlgoForge.Application.Auth.Commands.RefreshToken;
 using AlgoForge.Application.Auth.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,4 +31,20 @@ public class AuthController : ControllerBase
         var result = await _mediator.Send(command);
         return Ok(result);
     }
+
+    [HttpPost("refresh")]
+    public async Task<ActionResult<RefreshTokenResult>> Refresh(RefreshTokenRequest request)
+    {
+        var result = await _mediator.Send(new RefreshTokenCommand(request.RefreshToken));
+        return Ok(result);
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(RefreshTokenRequest request)
+    {
+        await _mediator.Send(new LogoutCommand(request.RefreshToken));
+        return NoContent();
+    }
 }
+
+public record RefreshTokenRequest(string RefreshToken);

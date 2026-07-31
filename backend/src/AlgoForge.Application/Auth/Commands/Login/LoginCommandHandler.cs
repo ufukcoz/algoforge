@@ -1,4 +1,5 @@
 using AlgoForge.Application.Common.Interfaces;
+using AlgoForge.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,8 +27,15 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
             throw new UnauthorizedAccessException("E-posta veya şifre hatalı.");
 
         var accessToken = _jwtService.GenerateAccessToken(user);
-        var refreshToken = _jwtService.GenerateRefreshToken();
+        var refreshTokenValue = _jwtService.GenerateRefreshToken();
 
-        return new LoginResult(accessToken, refreshToken, user.Username);
+        // Refresh token'i veritabanina kaydediyoruz ki /api/auth/refresh cagrildiginda
+        // gercekten bu kullaniciya ait, iptal edilmemis, suresi gecmemis bir token mi diye
+        // kontrol edebilelim. Onceden bu deger sadece uretilip hic saklanmiyordu.
+        var refreshToken = AlgoForge.Domain.Entities.RefreshToken.Create(user.Id, refreshTokenValue, DateTime.UtcNow.AddDays(30));
+        _context.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return new LoginResult(accessToken, refreshTokenValue, user.Username);
     }
 }
