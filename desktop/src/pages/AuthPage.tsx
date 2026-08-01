@@ -24,10 +24,10 @@ export default function AuthPage() {
         await register({ username, email, password });
         // Kayıt sonrası otomatik login dene
         const loginResult = await login({ email, password });
-        setSession(loginResult.username, loginResult.accessToken);
+        setSession(loginResult.username, loginResult.accessToken, loginResult.refreshToken);
       } else {
         const loginResult = await login({ email, password });
-        setSession(loginResult.username, loginResult.accessToken);
+        setSession(loginResult.username, loginResult.accessToken, loginResult.refreshToken);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Bir şeyler ters gitti.');

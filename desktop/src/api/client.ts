@@ -339,3 +339,33 @@ export async function getAiAssistance(
   const data = await handleResponse<{ message: string }>(response);
   return data.message;
 }
+
+// ---- Refresh token ----
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export async function refreshAccessToken(refreshToken: string): Promise<RefreshTokenResponse> {
+  const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refreshToken }),
+  });
+  return handleResponse<RefreshTokenResponse>(response);
+}
+
+export async function logoutRequest(refreshToken: string): Promise<void> {
+  // Best-effort: cikis yaparken sunucu tarafinda da token'i iptal etmeye calisiyoruz,
+  // ama basarisiz olsa bile kullaniciyi engellemiyoruz (local state zaten temizlenecek).
+  try {
+    await fetch(`${API_BASE_URL}/auth/logout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+  } catch {
+    // sessizce yut - logout'un kullanici deneyimini engellemesine gerek yok
+  }
+}
