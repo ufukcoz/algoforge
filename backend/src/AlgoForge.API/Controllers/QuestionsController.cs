@@ -38,11 +38,11 @@ public class QuestionsController : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
-    // TODO: Rol tabanli yetkilendirme (Admin) eklendiginde [Authorize(Roles = "Admin")] olarak guncellenmeli.
-    // Su an icin sadece login olmus herhangi bir kullanicinin soru eklemesini engellemek adina
-    // [Authorize] birakildi; gercek admin kontrolu Sprint sonrasi eklenecek.
+    // Artik gercekten sadece Role=Admin olan kullanicilar soru ekleyebiliyor.
+    // JwtService, login sirasinda ClaimTypes.Role claim'ini token'a ekliyor,
+    // ASP.NET Core bunu otomatik olarak [Authorize(Roles=...)] ile eslestiriyor.
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Guid>> CreateQuestion(CreateQuestionCommand command)
     {
         var id = await _mediator.Send(command);

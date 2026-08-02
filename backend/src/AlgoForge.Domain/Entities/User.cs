@@ -1,4 +1,5 @@
 using AlgoForge.Domain.Common;
+using AlgoForge.Domain.Enums;
 
 namespace AlgoForge.Domain.Entities;
 
@@ -12,6 +13,7 @@ public class User : BaseEntity
     public string? Country { get; private set; }
     public string? University { get; private set; }
     public bool EmailVerified { get; private set; }
+    public UserRole Role { get; private set; } = UserRole.User;
 
     private User() { }
 
@@ -33,4 +35,8 @@ public class User : BaseEntity
     }
 
     public void MarkEmailVerified() => EmailVerified = true;
+
+    // Su an icin admin yapma islemi sadece veritabanindan elle (SQL ile) yapiliyor -
+    // ileride bir "super admin" panelinden cagirilabilecek sekilde tasarlandi.
+    public void PromoteToAdmin() => Role = UserRole.Admin;
 }

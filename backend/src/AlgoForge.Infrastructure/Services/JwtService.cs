@@ -29,6 +29,9 @@ public class JwtService : IJwtService
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            // ClaimTypes.Role kullaniyoruz ki ASP.NET Core'un [Authorize(Roles = "Admin")]
+            // ozelligi bu claim'i otomatik olarak tanisin, ekstra bir yapilandirma gerekmesin.
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
         };
 
         var token = new JwtSecurityToken(
