@@ -17,6 +17,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ContestQuestion> ContestQuestions => Set<ContestQuestion>();
     public DbSet<ContestParticipant> ContestParticipants => Set<ContestParticipant>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

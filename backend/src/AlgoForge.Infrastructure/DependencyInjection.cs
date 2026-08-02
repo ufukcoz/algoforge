@@ -43,6 +43,13 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(30);
         });
 
+        // Resend API icin HttpClient - ucretsiz katman, kredi karti gerektirmez.
+        services.AddHttpClient<IEmailService, ResendEmailService>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.resend.com/");
+            client.Timeout = TimeSpan.FromSeconds(15);
+        });
+
         return services;
     }
 

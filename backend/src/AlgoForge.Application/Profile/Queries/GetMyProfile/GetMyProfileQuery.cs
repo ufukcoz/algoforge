@@ -7,6 +7,7 @@ public record GetMyProfileQuery(Guid UserId) : IRequest<ProfileDto>;
 public record ProfileDto(
     string Username,
     string Email,
+    bool EmailVerified,
     int Xp,
     int Level,
     string? Country,

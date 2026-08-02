@@ -195,6 +195,7 @@ export async function submitCode(
 export interface ProfileData {
   username: string;
   email: string;
+  emailVerified: boolean;
   xp: number;
   level: number;
   country: string | null;
@@ -367,5 +368,17 @@ export async function logoutRequest(refreshToken: string): Promise<void> {
     });
   } catch {
     // sessizce yut - logout'un kullanici deneyimini engellemesine gerek yok
+  }
+}
+
+// ---- Email dogrulama ----
+
+export async function resendVerificationEmail(accessToken: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/auth/resend-verification`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!response.ok) {
+    throw new Error('Dogrulama emaili gonderilemedi.');
   }
 }

@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { getProfile, resendVerificationEmail } from '../api/client';
 
 export type View = 'questions' | 'contests' | 'profile' | 'leaderboard';
 
@@ -17,7 +19,34 @@ const NAV_ITEMS: { id: View; label: string }[] = [
 ];
 
 export default function AppShell({ activeView, onNavigate, children }: AppShellProps) {
-  const { username, logout } = useAuth();
+  const { username, accessToken, logout } = useAuth();
+  const [isEmailVerified, setIsEmailVerified] = useState<boolean | null>(null);
+  const [isResending, setIsResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    getProfile(accessToken)
+      .then((profile) => setIsEmailVerified(profile.emailVerified))
+      .catch(() => {
+        // Profil yuklenemese bile uygulamayi kullanmaya devam edebilsin -
+        // bu banner sadece bilgilendirici, kritik bir engel degil.
+      });
+  }, [accessToken]);
+
+  const handleResend = async () => {
+    if (!accessToken) return;
+    setIsResending(true);
+    setResendMessage(null);
+    try {
+      await resendVerificationEmail(accessToken);
+      setResendMessage('Dogrulama emaili tekrar gonderildi, gelen kutunu kontrol et.');
+    } catch {
+      setResendMessage('Gonderilemedi, birazdan tekrar dene.');
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   return (
     <div style={styles.page}>
@@ -50,6 +79,23 @@ export default function AppShell({ activeView, onNavigate, children }: AppShellP
           </button>
         </div>
       </header>
+
+      {isEmailVerified === false && (
+        <div style={styles.verifyBanner}>
+          <span>
+            {'\u26a0\ufe0f'} E-posta adresin henuz dogrulanmadi.
+            {resendMessage ? ` ${resendMessage}` : ' Gelen kutunu kontrol et.'}
+          </span>
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={isResending}
+            style={styles.verifyButton}
+          >
+            {isResending ? 'gonderiliyor...' : 'tekrar gonder'}
+          </button>
+        </div>
+      )}
 
       <div style={styles.content}>{children}</div>
     </div>
@@ -126,5 +172,26 @@ const styles: Record<string, React.CSSProperties> = {
     flex: 1,
     minHeight: 0,
     overflowY: 'auto',
+  },
+  verifyBanner: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+    padding: '10px 24px',
+    background: 'rgba(245,158,11,0.12)',
+    borderBottom: '1px solid rgba(245,158,11,0.35)',
+    fontSize: 13,
+    color: '#fcd34d',
+  },
+  verifyButton: {
+    background: 'transparent',
+    border: '1px solid #fcd34d',
+    color: '#fcd34d',
+    borderRadius: 6,
+    padding: '5px 12px',
+    fontSize: 12,
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
   },
 };

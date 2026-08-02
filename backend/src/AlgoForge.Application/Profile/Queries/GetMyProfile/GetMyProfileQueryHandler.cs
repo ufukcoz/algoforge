@@ -33,6 +33,7 @@ public class GetMyProfileQueryHandler : IRequestHandler<GetMyProfileQuery, Profi
         return new ProfileDto(
             user.Username,
             user.Email,
+            user.EmailVerified,
             user.Xp,
             user.Level,
             user.Country,

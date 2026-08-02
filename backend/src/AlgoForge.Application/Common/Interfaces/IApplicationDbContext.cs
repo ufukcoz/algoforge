@@ -14,5 +14,6 @@ public interface IApplicationDbContext
     DbSet<ContestQuestion> ContestQuestions { get; }
     DbSet<ContestParticipant> ContestParticipants { get; }
     DbSet<RefreshToken> RefreshTokens { get; }
+    DbSet<EmailVerificationToken> EmailVerificationTokens { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
