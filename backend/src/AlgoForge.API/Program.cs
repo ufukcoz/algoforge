@@ -1,9 +1,11 @@
 using AlgoForge.Application;
 using AlgoForge.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +46,44 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+// Rate limiting - artik gercek internette yayinda oldugumuz icin kotuye kullanimi
+// (brute-force login denemeleri, spam kayit, ucretsiz Judge0/Gemini kotasini tuketme) onlemek gerekiyor.
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    // Auth endpoint'leri (register/login) - IP basina dakikada 5 istek.
+    // Brute-force sifre denemelerini ve spam hesap olusturmayi zorlastirir.
+    options.AddFixedWindowLimiter("auth", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 5;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueLimit = 0;
+    });
+
+    // Judge0/Gemini cagiran endpoint'ler (kod calistirma, submission, AI assistant) -
+    // kullanici basina dakikada 15 istek. Bu servisler ucretsiz katmanlarda paylasimli
+    // kota kullaniyor, tek bir kullanicinin hepsini tuketmesini engelliyoruz.
+    options.AddFixedWindowLimiter("expensive", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 15;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueLimit = 0;
+    });
+
+    // Genel API kullanimi icin daha gevsek bir global limit - IP basina dakikada 100 istek.
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+    {
+        var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        return RateLimitPartition.GetFixedWindowLimiter(ipAddress, _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 100,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0,
+        });
+    });
+});
+
 // Electron masaüstü istemcisi için CORS (dev aşamasında local origin'e izin ver)
 builder.Services.AddCors(options =>
 {
@@ -65,6 +105,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("DesktopClient");
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

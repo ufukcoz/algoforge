@@ -3,6 +3,7 @@ using AlgoForge.Application.Submissions.Queries.GetMySubmissions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AlgoForge.API.Controllers;
 
@@ -19,6 +20,7 @@ public class SubmissionsController : ApiControllerBase
     }
 
     [HttpPost]
+    [EnableRateLimiting("expensive")]
     public async Task<ActionResult<SubmissionResultDto>> CreateSubmission(CreateSubmissionRequest request)
     {
         var userId = GetCurrentUserId();

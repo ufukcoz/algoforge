@@ -2,6 +2,7 @@ using AlgoForge.Application.Ai.Commands.GetAssistance;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AlgoForge.API.Controllers;
 
@@ -18,6 +19,7 @@ public class AiController : ControllerBase
     }
 
     [HttpPost("assist")]
+    [EnableRateLimiting("expensive")]
     public async Task<ActionResult<AiAssistResponse>> Assist(AiAssistRequest request)
     {
         var response = await _mediator.Send(new GetAssistanceCommand(

@@ -7,6 +7,7 @@ using AlgoForge.Application.Auth.Commands.VerifyEmail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AlgoForge.API.Controllers;
 
@@ -22,6 +23,7 @@ public class AuthController : ApiControllerBase
     }
 
     [HttpPost("register")]
+    [EnableRateLimiting("auth")]
     public async Task<ActionResult<RegisterResult>> Register(RegisterCommand command)
     {
         var result = await _mediator.Send(command);
@@ -29,6 +31,7 @@ public class AuthController : ApiControllerBase
     }
 
     [HttpPost("login")]
+    [EnableRateLimiting("auth")]
     public async Task<ActionResult<LoginResult>> Login(LoginCommand command)
     {
         var result = await _mediator.Send(command);

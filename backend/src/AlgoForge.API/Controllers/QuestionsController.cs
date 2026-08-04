@@ -6,6 +6,7 @@ using AlgoForge.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AlgoForge.API.Controllers;
 
@@ -51,8 +52,10 @@ public class QuestionsController : ControllerBase
 
     // [Authorize] ile korunuyor: Judge0/RapidAPI ucretsiz katmani sinirli oldugu icin
     // anonim kullanicilarin bu endpoint'i suistimal etmesini engellemek gerekiyor.
+    // "expensive" rate limit: dakikada 15 istekle sinirli, ucretsiz Judge0 kotasini korur.
     [HttpPost("{id:guid}/run")]
     [Authorize]
+    [EnableRateLimiting("expensive")]
     public async Task<ActionResult<RunCodeResult>> RunCode(Guid id, RunCodeRequest request)
     {
         var result = await _mediator.Send(new RunCodeCommand(id, request.Language, request.SourceCode));
