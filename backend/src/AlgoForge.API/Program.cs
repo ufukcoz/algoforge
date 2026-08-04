@@ -1,3 +1,4 @@
+using AlgoForge.API.Middleware;
 using AlgoForge.Application;
 using AlgoForge.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -96,6 +97,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// En basta olmali ki asagidaki tum middleware'lerden/controller'lardan gelen
+// exception'lari yakalayabilsin.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
