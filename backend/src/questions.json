@@ -1,0 +1,54 @@
+[
+  {
+    "title": "Toplamı Bul",
+    "difficulty": "Easy",
+    "description": "Verilen bir tam sayı dizisi ve hedef değer için, dizideki iki farklı elemanın toplamı hedefe eşitse bu iki elemanın sıfır tabanlı indekslerini boşlukla ayırarak döndüren bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "4\n2 7 11 15\n9", "expectedOutput": "0 1", "isHidden": false },
+      { "input": "5\n3 2 4 6 1\n6", "expectedOutput": "1 2", "isHidden": false },
+      { "input": "4\n1 8 6 2\n10", "expectedOutput": "0 2", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Metni Ters Çevir",
+    "difficulty": "Easy",
+    "description": "Verilen bir metni tersine çeviren bir program yazın. Girdideki karakterlerin sırasını ters çevirerek çıktı olarak döndürün.",
+    "categoryId": "00000000-0000-0000-0000-000000000007",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "hello", "expectedOutput": "olleh", "isHidden": false },
+      { "input": "Copilot", "expectedOutput": "tolipoC", "isHidden": false },
+      { "input": "AlgoForge", "expectedOutput": "egroFoglA", "isHidden": true }
+    ]
+  },
+  {
+    "title": "En Büyük Alt Dizinin Toplamı",
+    "difficulty": "Medium",
+    "description": "Bir dizideki ardışık elemanlardan oluşan alt dizinin en büyük toplamını bulan bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "5\n-2 1 -3 4 -1 2 1 -5 4", "expectedOutput": "6", "isHidden": false },
+      { "input": "4\n2 3 -2 5", "expectedOutput": "8", "isHidden": false },
+      { "input": "3\n-1 -2 -3", "expectedOutput": "-1", "isHidden": true }
+    ]
+  },
+  {
+    "title": "İkili Arama",
+    "difficulty": "Easy",
+    "description": "Sıralı bir dizide verilen değeri bulan ve indeksini döndüren bir ikili arama algoritması yazın. Bulunamazsa -1 döndürün.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "5\n1 3 5 7 9\n7", "expectedOutput": "3", "isHidden": false },
+      { "input": "4\n2 4 6 8\n5", "expectedOutput": "-1", "isHidden": false },
+      { "input": "6\n-5 -2 0 1 4 10\n-2", "expectedOutput": "1", "isHidden": true }
+    ]
+  }
+]
