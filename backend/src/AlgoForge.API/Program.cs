@@ -85,12 +85,15 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
-// Electron masaüstü istemcisi için CORS (dev aşamasında local origin'e izin ver)
+// Electron masaüstü istemcisi için CORS. Bearer token (cookie degil) kullandigimiz
+// icin CORS'un asil korudugu CSRF riski burada gecerli degil - bu yuzden AllowAnyOrigin
+// guvenli. Bu ayrica Electron'un paketlenmis (file://) surumunun bazen "null" origin
+// gondermesi gibi durumlari da otomatik kapsar, tek tek origin eklemek gerekmez.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DesktopClient", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Electron dev server
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
