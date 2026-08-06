@@ -1,54 +1,275 @@
 [
   {
-    "title": "Toplamı Bul",
+    "title": "Dizideki En Büyük Sayı",
     "difficulty": "Easy",
-    "description": "Verilen bir tam sayı dizisi ve hedef değer için, dizideki iki farklı elemanın toplamı hedefe eşitse bu iki elemanın sıfır tabanlı indekslerini boşlukla ayırarak döndüren bir program yazın.",
+    "description": "Verilen bir tam sayı dizisindeki en büyük elemanı bulan bir program yazın.",
     "categoryId": "00000000-0000-0000-0000-000000000001",
     "timeLimitMs": 2000,
     "memoryLimitMb": 256,
     "testCases": [
-      { "input": "4\n2 7 11 15\n9", "expectedOutput": "0 1", "isHidden": false },
-      { "input": "5\n3 2 4 6 1\n6", "expectedOutput": "1 2", "isHidden": false },
-      { "input": "4\n1 8 6 2\n10", "expectedOutput": "0 2", "isHidden": true }
+      { "input": "5\n3 7 2 9 4", "expectedOutput": "9", "isHidden": false },
+      { "input": "4\n-5 -2 -10 -1", "expectedOutput": "-1", "isHidden": false },
+      { "input": "6\n12 5 18 3 18 7", "expectedOutput": "18", "isHidden": true }
     ]
   },
   {
-    "title": "Metni Ters Çevir",
+    "title": "Dizideki En Küçük Sayı",
     "difficulty": "Easy",
-    "description": "Verilen bir metni tersine çeviren bir program yazın. Girdideki karakterlerin sırasını ters çevirerek çıktı olarak döndürün.",
-    "categoryId": "00000000-0000-0000-0000-000000000007",
-    "timeLimitMs": 2000,
-    "memoryLimitMb": 256,
-    "testCases": [
-      { "input": "hello", "expectedOutput": "olleh", "isHidden": false },
-      { "input": "Copilot", "expectedOutput": "tolipoC", "isHidden": false },
-      { "input": "AlgoForge", "expectedOutput": "egroFoglA", "isHidden": true }
-    ]
-  },
-  {
-    "title": "En Büyük Alt Dizinin Toplamı",
-    "difficulty": "Medium",
-    "description": "Bir dizideki ardışık elemanlardan oluşan alt dizinin en büyük toplamını bulan bir program yazın.",
+    "description": "Verilen bir tam sayı dizisindeki en küçük elemanı bulan bir program yazın.",
     "categoryId": "00000000-0000-0000-0000-000000000001",
     "timeLimitMs": 2000,
     "memoryLimitMb": 256,
     "testCases": [
-      { "input": "5\n-2 1 -3 4 -1 2 1 -5 4", "expectedOutput": "6", "isHidden": false },
-      { "input": "4\n2 3 -2 5", "expectedOutput": "8", "isHidden": false },
-      { "input": "3\n-1 -2 -3", "expectedOutput": "-1", "isHidden": true }
+      { "input": "5\n8 3 6 1 9", "expectedOutput": "1", "isHidden": false },
+      { "input": "4\n-3 -7 -2 -5", "expectedOutput": "-7", "isHidden": false },
+      { "input": "6\n10 4 8 2 6 1", "expectedOutput": "1", "isHidden": true }
     ]
   },
   {
-    "title": "İkili Arama",
+    "title": "Dizinin Ortalamasını Bul",
     "difficulty": "Easy",
-    "description": "Sıralı bir dizide verilen değeri bulan ve indeksini döndüren bir ikili arama algoritması yazın. Bulunamazsa -1 döndürün.",
+    "description": "Verilen tam sayı dizisinin aritmetik ortalamasını hesaplayan bir program yazın. Sonucu virgülden sonra iki basamak olacak şekilde yazdırın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "4\n10 20 30 40", "expectedOutput": "25.00", "isHidden": false },
+      { "input": "5\n1 2 3 4 5", "expectedOutput": "3.00", "isHidden": false },
+      { "input": "3\n-5 0 8", "expectedOutput": "1.00", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Çift Sayıları Bul",
+    "difficulty": "Easy",
+    "description": "Verilen dizideki çift sayıları sıralarını bozmadan bulan ve boşluklarla ayırarak yazdıran bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "6\n1 2 3 4 5 6", "expectedOutput": "2 4 6", "isHidden": false },
+      { "input": "5\n8 3 10 7 12", "expectedOutput": "8 10 12", "isHidden": false },
+      { "input": "4\n1 3 5 7", "expectedOutput": "", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Faktöriyel Hesaplama",
+    "difficulty": "Easy",
+    "description": "Verilen negatif olmayan bir n sayısının faktöriyelini hesaplayan bir program yazın.",
     "categoryId": "00000000-0000-0000-0000-00000000000c",
     "timeLimitMs": 2000,
     "memoryLimitMb": 256,
     "testCases": [
-      { "input": "5\n1 3 5 7 9\n7", "expectedOutput": "3", "isHidden": false },
-      { "input": "4\n2 4 6 8\n5", "expectedOutput": "-1", "isHidden": false },
-      { "input": "6\n-5 -2 0 1 4 10\n-2", "expectedOutput": "1", "isHidden": true }
+      { "input": "5", "expectedOutput": "120", "isHidden": false },
+      { "input": "0", "expectedOutput": "1", "isHidden": false },
+      { "input": "7", "expectedOutput": "5040", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Asal Sayı Kontrolü",
+    "difficulty": "Easy",
+    "description": "Verilen pozitif tam sayının asal olup olmadığını kontrol eden bir program yazın. Asal ise YES, değilse NO yazdırın.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "7", "expectedOutput": "YES", "isHidden": false },
+      { "input": "12", "expectedOutput": "NO", "isHidden": false },
+      { "input": "97", "expectedOutput": "YES", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Palindrom Sayı",
+    "difficulty": "Easy",
+    "description": "Verilen pozitif tam sayının tersten okunduğunda aynı olup olmadığını kontrol eden bir program yazın. Palindrom ise YES, değilse NO yazdırın.",
+    "categoryId": "00000000-0000-0000-0000-000000000007",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "121", "expectedOutput": "YES", "isHidden": false },
+      { "input": "123", "expectedOutput": "NO", "isHidden": false },
+      { "input": "1221", "expectedOutput": "YES", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Kelimedeki Sesli Harf Sayısı",
+    "difficulty": "Easy",
+    "description": "Verilen bir metinde bulunan sesli harflerin sayısını bulan bir program yazın. İngilizce a, e, i, o, u harflerini sesli kabul edin.",
+    "categoryId": "00000000-0000-0000-0000-000000000007",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "hello", "expectedOutput": "2", "isHidden": false },
+      { "input": "programming", "expectedOutput": "3", "isHidden": false },
+      { "input": "algorithm", "expectedOutput": "3", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Fibonacci Sayısı",
+    "difficulty": "Easy",
+    "description": "Fibonacci dizisinin 0 tabanlı n. elemanını hesaplayan bir program yazın. Fibonacci dizisi 0, 1, 1, 2, 3... şeklindedir.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "0", "expectedOutput": "0", "isHidden": false },
+      { "input": "6", "expectedOutput": "8", "isHidden": false },
+      { "input": "10", "expectedOutput": "55", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Diziyi Ters Çevir",
+    "difficulty": "Easy",
+    "description": "Verilen tam sayı dizisinin elemanlarını ters sırada yazdıran bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "5\n1 2 3 4 5", "expectedOutput": "5 4 3 2 1", "isHidden": false },
+      { "input": "4\n10 20 30 40", "expectedOutput": "40 30 20 10", "isHidden": false },
+      { "input": "3\n-1 0 5", "expectedOutput": "5 0 -1", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Tekrar Eden Elemanları Bul",
+    "difficulty": "Medium",
+    "description": "Verilen dizide birden fazla kez bulunan elemanları bulan ve her tekrar eden değeri yalnızca bir kez yazdıran bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "6\n1 2 3 2 4 1", "expectedOutput": "1 2", "isHidden": false },
+      { "input": "5\n5 5 5 2 3", "expectedOutput": "5", "isHidden": false },
+      { "input": "7\n1 2 3 4 3 2 5", "expectedOutput": "2 3", "isHidden": true }
+    ]
+  },
+  {
+    "title": "İki Dizinin Kesişimi",
+    "difficulty": "Medium",
+    "description": "İki tam sayı dizisinde ortak bulunan elemanları bulan ve her ortak elemanı yalnızca bir kez yazdıran bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "4\n1 2 2 1\n4\n2 2", "expectedOutput": "2", "isHidden": false },
+      { "input": "3\n4 9 5\n5\n9 4 9 8 4", "expectedOutput": "4 9", "isHidden": false },
+      { "input": "5\n1 2 3 4 5\n3\n6 7 8", "expectedOutput": "", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Parantezleri Kontrol Et",
+    "difficulty": "Medium",
+    "description": "Verilen parantez dizisinin geçerli olup olmadığını kontrol edin. Her açılan parantez doğru sırada kapanmalıdır. Geçerliyse YES, değilse NO yazdırın.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "()", "expectedOutput": "YES", "isHidden": false },
+      { "input": "([{}])", "expectedOutput": "YES", "isHidden": false },
+      { "input": "([)]", "expectedOutput": "NO", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Yığın ile Parantez Kontrolü",
+    "difficulty": "Medium",
+    "description": "(), [], {} türündeki parantezlerden oluşan bir dizinin dengeli olup olmadığını Stack veri yapısını kullanarak kontrol eden bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "{[()]}", "expectedOutput": "YES", "isHidden": false },
+      { "input": "{[(])}", "expectedOutput": "NO", "isHidden": false },
+      { "input": "((()))[]{}", "expectedOutput": "YES", "isHidden": true }
+    ]
+  },
+  {
+    "title": "En Uzun Kelime",
+    "difficulty": "Easy",
+    "description": "Verilen bir cümledeki en uzun kelimeyi bulan bir program yazın. Kelimeler boşluklarla ayrılmıştır.",
+    "categoryId": "00000000-0000-0000-0000-000000000007",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "I love programming", "expectedOutput": "programming", "isHidden": false },
+      { "input": "hello world", "expectedOutput": "hello", "isHidden": false },
+      { "input": "data structures are important", "expectedOutput": "structures", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Sıralı Dizileri Birleştir",
+    "difficulty": "Medium",
+    "description": "Küçükten büyüğe sıralanmış iki diziyi yeni bir dizi oluşturarak yine küçükten büyüğe sıralı şekilde birleştiren bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "3\n1 3 5\n3\n2 4 6", "expectedOutput": "1 2 3 4 5 6", "isHidden": false },
+      { "input": "3\n1 2 8\n4\n3 4 5 7", "expectedOutput": "1 2 3 4 5 7 8", "isHidden": false },
+      { "input": "2\n-5 10\n3\n-8 -2 7", "expectedOutput": "-8 -5 -2 7 10", "isHidden": true }
+    ]
+  },
+  {
+    "title": "En Uzun Ardışık Dizi",
+    "difficulty": "Medium",
+    "description": "Bir tam sayı dizisinde art arda gelen ve sürekli artan elemanlardan oluşan en uzun bölümün uzunluğunu bulun.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "7\n1 2 3 2 3 4 5", "expectedOutput": "4", "isHidden": false },
+      { "input": "5\n5 4 3 2 1", "expectedOutput": "1", "isHidden": false },
+      { "input": "8\n1 2 5 6 7 1 2 3", "expectedOutput": "3", "isHidden": true }
+    ]
+  },
+  {
+    "title": "İki Sayının EBOB'u",
+    "difficulty": "Easy",
+    "description": "Verilen iki pozitif tam sayının en büyük ortak bölenini Öklid algoritmasını kullanarak bulan bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "12 18", "expectedOutput": "6", "isHidden": false },
+      { "input": "48 18", "expectedOutput": "6", "isHidden": false },
+      { "input": "100 25", "expectedOutput": "25", "isHidden": true }
+    ]
+  },
+  {
+    "title": "İki Sayının EKOK'u",
+    "difficulty": "Medium",
+    "description": "Verilen iki pozitif tam sayının en küçük ortak katını bulan bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-00000000000c",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "4 6", "expectedOutput": "12", "isHidden": false },
+      { "input": "12 18", "expectedOutput": "36", "isHidden": false },
+      { "input": "15 20", "expectedOutput": "60", "isHidden": true }
+    ]
+  },
+  {
+    "title": "Sıfırları Sona Taşı",
+    "difficulty": "Medium",
+    "description": "Verilen dizideki tüm sıfırları dizinin sonuna taşıyan ve sıfır olmayan elemanların kendi aralarındaki sırasını koruyan bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "5\n0 1 0 3 12", "expectedOutput": "1 3 12 0 0", "isHidden": false },
+      { "input": "4\n0 0 1 2", "expectedOutput": "1 2 0 0", "isHidden": false },
+      { "input": "6\n1 0 2 0 3 0", "expectedOutput": "1 2 3 0 0 0", "isHidden": true }
+    ]
+  },
+  {
+    "title": "En Büyük İki Sayıyı Bul",
+    "difficulty": "Medium",
+    "description": "Bir dizideki birbirinden farklı en büyük iki elemanı bulan ve büyük olanı önce yazdıran bir program yazın.",
+    "categoryId": "00000000-0000-0000-0000-000000000001",
+    "timeLimitMs": 2000,
+    "memoryLimitMb": 256,
+    "testCases": [
+      { "input": "5\n10 5 8 20 15", "expectedOutput": "20 15", "isHidden": false },
+      { "input": "4\n-1 -5 -2 -3", "expectedOutput": "-1 -2", "isHidden": false },
+      { "input": "6\n100 25 75 90 80 95", "expectedOutput": "100 95", "isHidden": true }
     ]
   }
 ]
