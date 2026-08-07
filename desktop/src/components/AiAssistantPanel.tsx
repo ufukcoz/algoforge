@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { getAiAssistance, type AiAssistAction } from '../api/client';
+import {
+  getAiAssistance,
+  type AiAssistAction,
+} from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
 interface AiAssistantPanelProps {
@@ -8,26 +11,66 @@ interface AiAssistantPanelProps {
   language: string;
 }
 
-const ACTIONS: { id: AiAssistAction; label: string; icon: string }[] = [
-  { id: 'Hint', label: 'Ipucu', icon: '\ud83d\udca1' },
-  { id: 'ComplexityAnalysis', label: 'Karmasiklik', icon: '\u23f1\ufe0f' },
-  { id: 'ExplainBug', label: 'Hata Bul', icon: '\ud83d\udc1b' },
-  { id: 'ExplainCode', label: 'Kodu Acikla', icon: '\ud83d\udcd6' },
-  { id: 'SuggestSolution', label: 'Daha Iyi Yaklasim', icon: '\u2728' },
+const ACTIONS: {
+  id: AiAssistAction;
+  label: string;
+  icon: string;
+}[] = [
+  {
+    id: 'Hint',
+    label: 'Ipucu',
+    icon: '💡',
+  },
+  {
+    id: 'ComplexityAnalysis',
+    label: 'Karmasiklik',
+    icon: '⏱️',
+  },
+  {
+    id: 'ExplainBug',
+    label: 'Hata Bul',
+    icon: '🐛',
+  },
+  {
+    id: 'ExplainCode',
+    label: 'Kodu Acikla',
+    icon: '📖',
+  },
+  {
+    id: 'SuggestSolution',
+    label: 'Daha Iyi Yaklasim',
+    icon: '✨',
+  },
 ];
 
-export default function AiAssistantPanel({ questionId, code, language }: AiAssistantPanelProps) {
+export default function AiAssistantPanel({
+  questionId,
+  code,
+  language,
+}: AiAssistantPanelProps) {
   const { accessToken } = useAuth();
-  const [activeAction, setActiveAction] = useState<AiAssistAction | null>(null);
-  const [response, setResponse] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleAskAi = async (action: AiAssistAction) => {
+  const [activeAction, setActiveAction] =
+    useState<AiAssistAction | null>(null);
+
+  const [response, setResponse] =
+    useState<string | null>(null);
+
+  const [isLoading, setIsLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState<string | null>(null);
+
+  const handleAskAi = async (
+    action: AiAssistAction
+  ) => {
     if (!accessToken) return;
 
     if (!code.trim()) {
-      setError('Once editore bir seyler yazmalisin.');
+      setError(
+        'Once editore bir seyler yazmalisin.'
+      );
       return;
     }
 
@@ -37,10 +80,21 @@ export default function AiAssistantPanel({ questionId, code, language }: AiAssis
     setResponse(null);
 
     try {
-      const result = await getAiAssistance(questionId, code, language, action, accessToken);
+      const result = await getAiAssistance(
+        questionId,
+        code,
+        language,
+        action,
+        accessToken
+      );
+
       setResponse(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'AI Assistant su an yanit veremiyor.');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'AI Assistant su an yanit veremiyor.'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -48,80 +102,193 @@ export default function AiAssistantPanel({ questionId, code, language }: AiAssis
 
   return (
     <div style={styles.wrapper}>
-      <p style={styles.header}>{'// AI Assistant'}</p>
+
+      {/* HEADER */}
+
+      <div style={styles.headerRow}>
+        <p style={styles.header}>
+          {'// AI Assistant'}
+        </p>
+
+        <span style={styles.statusDot}>
+          ●
+        </span>
+      </div>
+
+      <p style={styles.description}>
+        Kodunu inceleyebilir, hata bulabilir,
+        ipucu verebilir ve daha iyi çözüm
+        yaklaşımları önerebilirim.
+      </p>
+
+      {/* AI BUTONLARI */}
 
       <div style={styles.actionGrid}>
         {ACTIONS.map((action) => (
           <button
             key={action.id}
             type="button"
-            onClick={() => handleAskAi(action.id)}
+            onClick={() =>
+              handleAskAi(action.id)
+            }
             disabled={isLoading}
             style={{
               ...styles.actionButton,
-              ...(activeAction === action.id ? styles.actionButtonActive : {}),
+              ...(activeAction === action.id
+                ? styles.actionButtonActive
+                : {}),
             }}
           >
-            <span>{action.icon}</span>
-            <span>{action.label}</span>
+            <span style={styles.actionIcon}>
+              {action.icon}
+            </span>
+
+            <span>
+              {action.label}
+            </span>
           </button>
         ))}
       </div>
 
-      {isLoading && <p style={styles.statusText}>AI dusunuyor...</p>}
-      {error && <div style={styles.errorBox}>{error}</div>}
-      {response && !isLoading && (
-        <div style={styles.responseBox}>
-          <p style={styles.responseText}>{response}</p>
+      {/* LOADING */}
+
+      {isLoading && (
+        <div style={styles.loadingBox}>
+          <span style={styles.loadingIcon}>
+            ✨
+          </span>
+
+          <span>
+            AI dusunuyor...
+          </span>
         </div>
       )}
+
+      {/* ERROR */}
+
+      {error && (
+        <div style={styles.errorBox}>
+          {error}
+        </div>
+      )}
+
+      {/* RESPONSE */}
+
+      {response && !isLoading && (
+        <div style={styles.responseBox}>
+          <div style={styles.responseHeader}>
+            🤖 AI Assistant
+          </div>
+
+          <p style={styles.responseText}>
+            {response}
+          </p>
+        </div>
+      )}
+
+      <div style={styles.footer}>
+        Dil: {language}
+      </div>
+
     </div>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<
+  string,
+  React.CSSProperties
+> = {
+
   wrapper: {
-    marginTop: 20,
+    width: '100%',
+    minHeight: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    boxSizing: 'border-box',
     border: '1px solid var(--color-border)',
-    borderRadius: 8,
-    padding: 16,
+    borderRadius: 10,
+    padding: 18,
     background: 'var(--color-surface)',
   },
-  header: {
-    fontFamily: 'var(--font-mono)',
-    fontSize: 12,
-    color: 'var(--color-primary)',
-    margin: '0 0 12px',
-  },
-  actionGrid: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  actionButton: {
+
+  headerRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: 6,
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+
+  header: {
+    fontFamily: 'var(--font-mono)',
+    fontSize: 14,
+    color: 'var(--color-primary)',
+    margin: 0,
+  },
+
+  statusDot: {
+    fontSize: 9,
+    color: 'var(--color-success)',
+  },
+
+  description: {
+    fontSize: 13,
+    lineHeight: 1.6,
+    color: 'var(--color-text-muted)',
+    margin: '0 0 18px',
+  },
+
+  actionGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  },
+
+  actionButton: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
     background: 'var(--color-bg)',
     border: '1px solid var(--color-border)',
     color: 'var(--color-text)',
-    borderRadius: 6,
-    padding: '7px 12px',
+    borderRadius: 7,
+    padding: '10px 12px',
     fontSize: 12,
     cursor: 'pointer',
+    textAlign: 'left',
   },
+
   actionButtonActive: {
     borderColor: 'var(--color-primary)',
     color: 'var(--color-primary)',
+    background: 'var(--color-bg-elevated)',
   },
-  statusText: {
-    marginTop: 12,
+
+  actionIcon: {
+    width: 20,
+    textAlign: 'center',
+  },
+
+  loadingBox: {
+    marginTop: 16,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: 12,
+    borderRadius: 7,
+    background: 'var(--color-bg)',
+    border: '1px solid var(--color-border)',
     fontFamily: 'var(--font-mono)',
     fontSize: 12,
     color: 'var(--color-text-muted)',
   },
+
+  loadingIcon: {
+    color: 'var(--color-primary)',
+  },
+
   errorBox: {
-    marginTop: 12,
+    marginTop: 16,
     background: 'rgba(239,68,68,0.1)',
     border: '1px solid rgba(239,68,68,0.35)',
     borderRadius: 6,
@@ -129,18 +296,38 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 13,
     color: '#fca5a5',
   },
+
   responseBox: {
-    marginTop: 12,
+    marginTop: 18,
     background: 'var(--color-bg)',
     border: '1px solid var(--color-border)',
-    borderRadius: 6,
-    padding: '12px 14px',
+    borderRadius: 8,
+    overflow: 'hidden',
   },
+
+  responseHeader: {
+    padding: '10px 12px',
+    borderBottom: '1px solid var(--color-border)',
+    fontFamily: 'var(--font-mono)',
+    fontSize: 11,
+    color: 'var(--color-primary)',
+  },
+
   responseText: {
     fontSize: 13,
     lineHeight: 1.7,
     color: 'var(--color-text)',
     margin: 0,
+    padding: 14,
     whiteSpace: 'pre-wrap',
+    overflowWrap: 'anywhere',
+  },
+
+  footer: {
+    marginTop: 'auto',
+    paddingTop: 16,
+    color: 'var(--color-text-muted)',
+    fontFamily: 'var(--font-mono)',
+    fontSize: 10,
   },
 };
