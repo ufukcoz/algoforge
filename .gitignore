@@ -2,3 +2,5 @@
 .env.*
 !.env.example
 *.lnk
+# Local development secrets
+backend/src/AlgoForge.API/appsettings.Development.json
