@@ -653,10 +653,10 @@ public class CreateSubmissionCommandHandlerTests
         public DbSet<EmailVerificationToken> EmailVerificationTokens =>
             Set<EmailVerificationToken>();
 
-        public Task<int> SaveChangesAsync(
-            CancellationToken cancellationToken)
-        {
-            return base.SaveChangesAsync(cancellationToken);
-        }
+     public override Task<int> SaveChangesAsync(
+    CancellationToken cancellationToken = default)
+{
+    return base.SaveChangesAsync(cancellationToken);
+}
     }
 }
