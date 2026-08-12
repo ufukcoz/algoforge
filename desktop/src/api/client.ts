@@ -2,7 +2,7 @@
 // Vite build sirasinda VITE_API_BASE_URL ortam degiskeni verilirse onu kullanir,
 // verilmezse local gelistirme icin localhost:5000'e duser. Boylece ayni kod hem
 // local backend'e hem Render'daki canli API'ye baglanabilir - .env dosyasiyla degistirilir.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://algoforge-api-b3b9.onrender.com/api';
 
 export interface RegisterPayload {
   username: string;
