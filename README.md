@@ -1,10 +1,10 @@
 # AlgoForge
 
-> AI-powered algorithm learning and coding practice platform built with ASP.NET Core, React, TypeScript, PostgreSQL, Judge0 and Electron.
+> AI-powered algorithm learning and competitive programming platform built with ASP.NET Core, React, TypeScript, PostgreSQL, Judge0 and Electron.
 
-AlgoForge is a desktop-oriented algorithm learning platform designed to help developers improve their problem-solving and programming skills through coding challenges, real-time code execution, contests, leaderboards and AI-assisted learning.
+AlgoForge is a desktop-oriented algorithm learning platform designed to help developers improve their problem-solving and programming skills through coding challenges, code execution, contests, leaderboards and AI-assisted learning.
 
-The project is built with a modular backend architecture and a modern Electron + React desktop client.
+The project combines a modular ASP.NET Core backend with an Electron-based desktop client and a PostgreSQL-powered persistence layer.
 
 ---
 
@@ -12,136 +12,118 @@ The project is built with a modular backend architecture and a modern Electron +
 
 ### 🧩 Algorithm Practice
 
-* Browse algorithm and programming questions
+* Browse programming and algorithm questions
 * Difficulty-based questions
 * Category-based organization
 * Question detail pages
-* Code editor powered by Monaco Editor
-* Multi-language code execution
-* Submission history
-* Execution results
+* Monaco-based code editor
+* Code execution and submissions
+* Submission results
+* Supported programming languages
 
 ### 🤖 AI Assistant
 
 AlgoForge includes an AI-powered assistant designed to support the learning process.
 
-The assistant can be used for:
+The assistant can help users with:
 
 * Understanding programming problems
 * Getting hints
-* Analyzing code
 * Understanding errors
+* Analyzing code
 * Improving problem-solving approaches
 
 The goal is to use AI as a learning assistant rather than simply providing solutions.
 
 ### 🏆 Contests
 
-AlgoForge includes a contest system for competitive programming scenarios.
+AlgoForge includes a competitive programming contest system.
 
 * Contest listing
 * Contest details
 * Contest questions
-* Submissions
+* Contest submissions
 * Contest leaderboard
 
 ### 📊 Leaderboard
 
-Users can compare their performance through leaderboard functionality.
+Users can compare their competitive programming performance through leaderboard functionality.
 
 ### 👤 User Profiles
 
-The platform includes user profile functionality for managing account-related information and programming activity.
+Authenticated users can access their profile and account-related information.
 
 ### 💻 Desktop Application
 
-AlgoForge is distributed as a desktop application using Electron.
+AlgoForge is distributed as a desktop application built with Electron.
 
 The desktop client provides:
 
-* React-based UI
+* React-based interface
 * TypeScript
 * Monaco Editor
 * Electron
 * API integration
 * Authentication
 * Coding environment
+* AI assistant integration
 
 ---
 
-# 🏗️ Architecture
+# 🏗️ System Architecture
 
-AlgoForge follows a modular backend architecture based on **Clean Architecture principles**.
+AlgoForge is composed of a desktop client, ASP.NET Core backend, PostgreSQL database and external services.
 
 ```text
-                         ┌─────────────────────┐
-                         │   AlgoForge Desktop  │
-                         │ Electron + React    │
-                         │ TypeScript           │
-                         └──────────┬──────────┘
-                                    │
-                                    │ HTTP / REST
-                                    ▼
-                         ┌─────────────────────┐
-                         │    AlgoForge API    │
-                         │    ASP.NET Core     │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │    Application      │
-                         │ CQRS / Use Cases    │
-                         ├─────────────────────┤
-                         │ Auth                │
-                         │ Questions           │
-                         │ Submissions         │
-                         │ Contests            │
-                         │ Leaderboard         │
-                         │ Profile             │
-                         │ AI                  │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │       Domain        │
-                         │   Business Rules    │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │ Infrastructure      │
-                         │ EF Core / Services  │
-                         └──────────┬──────────┘
-                                    │
-                   ┌────────────────┼────────────────┐
-                   ▼                ▼                ▼
-             PostgreSQL          Judge0          AI Provider
+                           ┌──────────────────────┐
+                           │   AlgoForge Desktop  │
+                           │ Electron + React     │
+                           │ TypeScript            │
+                           └───────────┬──────────┘
+                                       │
+                                       │ HTTP / REST
+                                       ▼
+                           ┌──────────────────────┐
+                           │    AlgoForge API     │
+                           │    ASP.NET Core      │
+                           └───────────┬──────────┘
+                                       │
+                                       ▼
+                           ┌──────────────────────┐
+                           │     Application      │
+                           │   CQRS / Use Cases   │
+                           ├──────────────────────┤
+                           │ Auth                 │
+                           │ Questions            │
+                           │ Submissions          │
+                           │ Contests             │
+                           │ Leaderboard          │
+                           │ Profile              │
+                           │ Categories           │
+                           │ AI                   │
+                           └───────────┬──────────┘
+                                       │
+                       ┌───────────────┼───────────────┐
+                       ▼               ▼               ▼
+                ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+                │ PostgreSQL  │ │   Judge0    │ │ AI Provider │
+                │  Database   │ │ Code Engine │ │ AI Services │
+                └─────────────┘ └─────────────┘ └─────────────┘
 ```
 
 ---
 
 # 🧱 Backend Architecture
 
-The backend is organized around Clean Architecture principles.
+The backend follows Clean Architecture principles and uses a modular application structure.
 
 ```text
 backend/
 │
 ├── src/
 │   ├── AlgoForge.API/
-│   │
 │   ├── AlgoForge.Application/
-│   │   ├── Ai/
-│   │   ├── Auth/
-│   │   ├── Categories/
-│   │   ├── Contests/
-│   │   ├── Leaderboard/
-│   │   ├── Profile/
-│   │   ├── Questions/
-│   │   └── Submissions/
-│   │
 │   ├── AlgoForge.Domain/
-│   │
 │   └── AlgoForge.Infrastructure/
 │
 └── tests/
@@ -158,9 +140,10 @@ backend/
 * PostgreSQL
 * JWT Authentication
 * REST API
-* Centralized exception handling
-* Rate limiting
-* Automated testing
+* Rate Limiting
+* Centralized Exception Handling
+* Automated Testing
+* Docker-based deployment
 
 ---
 
@@ -179,56 +162,50 @@ desktop/
 │   └── ...
 │
 ├── electron/
-│
 ├── public/
-│
 └── package.json
 ```
 
-### Technologies
+The desktop client communicates with the backend through HTTP APIs.
 
-* Electron
-* React
-* TypeScript
-* Vite
-* Monaco Editor
-* Electron Builder
+PostgreSQL, Judge0 and AI services are accessed through the backend rather than directly from the desktop application.
 
 ---
 
-# 🛠️ Tech Stack
+# 🛠️ Technology Stack
 
 ## Backend
 
 | Technology            | Purpose                  |
 | --------------------- | ------------------------ |
 | C#                    | Programming language     |
-| ASP.NET Core          | Web API                  |
-| Entity Framework Core | ORM                      |
-| PostgreSQL            | Database                 |
+| ASP.NET Core          | REST API                 |
+| Entity Framework Core | ORM / data access        |
+| PostgreSQL            | Relational database      |
 | JWT                   | Authentication           |
 | CQRS                  | Application architecture |
-| Clean Architecture    | System architecture      |
+| Clean Architecture    | Backend architecture     |
 | Swagger / OpenAPI     | API documentation        |
 
-## Frontend / Desktop
+## Desktop
 
-| Technology       | Purpose                        |
-| ---------------- | ------------------------------ |
-| React            | UI                             |
-| TypeScript       | Type-safe frontend development |
-| Vite             | Frontend tooling               |
-| Electron         | Desktop application            |
-| Monaco Editor    | Code editor                    |
-| Electron Builder | Application packaging          |
+| Technology       | Purpose               |
+| ---------------- | --------------------- |
+| Electron         | Desktop runtime       |
+| React            | User interface        |
+| TypeScript       | Type-safe development |
+| Vite             | Frontend tooling      |
+| Monaco Editor    | Code editor           |
+| Electron Builder | Application packaging |
 
 ## External Services
 
-| Service     | Purpose                 |
-| ----------- | ----------------------- |
-| Judge0      | Code execution          |
-| AI Provider | AI-assisted learning    |
-| PostgreSQL  | Persistent data storage |
+| Service     | Purpose                     |
+| ----------- | --------------------------- |
+| Judge0      | User code execution         |
+| AI Provider | AI-assisted learning        |
+| PostgreSQL  | Persistent application data |
+| Render      | Production API hosting      |
 
 ## DevOps
 
@@ -245,6 +222,7 @@ desktop/
 AlgoForge/
 │
 ├── backend/
+│   │
 │   ├── src/
 │   │   ├── AlgoForge.API/
 │   │   ├── AlgoForge.Application/
@@ -276,13 +254,13 @@ AlgoForge/
 
 ## Prerequisites
 
-Before running AlgoForge locally, install:
+Install the following tools before running AlgoForge locally:
 
+* Git
 * .NET SDK
 * Node.js
 * npm
 * PostgreSQL
-* Git
 * Docker (optional)
 
 ---
@@ -293,7 +271,11 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/ufukcoz/algoforge.git
+```
 
+Navigate to the backend:
+
+```bash
 cd algoforge/backend
 ```
 
@@ -315,31 +297,31 @@ Run the API:
 dotnet run --project src/AlgoForge.API
 ```
 
-The API will be available according to the configured ASP.NET Core environment and launch settings.
-
-Swagger can be used to explore the available API endpoints during development.
+The API will run using the ASP.NET Core configuration for the selected environment.
 
 ---
 
 # 🗄️ Database
 
-AlgoForge uses PostgreSQL as its primary relational database.
+AlgoForge uses PostgreSQL as its primary database.
 
-Configure the database connection through environment-specific configuration.
+The database connection is configured through the ASP.NET Core configuration system.
 
-Example:
+Typical configuration:
 
 ```text
 ConnectionStrings__DefaultConnection
 ```
 
-Do not commit real database credentials to the repository.
+For local development, database credentials should be supplied through environment variables, User Secrets or local configuration.
+
+Never commit production database credentials to Git.
 
 ---
 
 # 🖥️ Desktop Setup
 
-Navigate to the desktop project:
+Navigate to the desktop application:
 
 ```bash
 cd desktop
@@ -351,13 +333,13 @@ Install dependencies:
 npm install
 ```
 
-Start the development environment:
+Start the Vite development server:
 
 ```bash
 npm run dev
 ```
 
-For Electron development:
+Run the Electron development environment:
 
 ```bash
 npm run electron:dev
@@ -365,9 +347,9 @@ npm run electron:dev
 
 ---
 
-# 📦 Build Desktop Application
+# 📦 Desktop Production Build
 
-Create a production build:
+Build the frontend:
 
 ```bash
 npm run build
@@ -379,7 +361,7 @@ Build the Electron application:
 npm run electron:build
 ```
 
-The generated application artifacts are placed in the configured release directory.
+Production artifacts are generated in the configured release directory.
 
 ---
 
@@ -387,7 +369,7 @@ The generated application artifacts are placed in the configured release directo
 
 The backend can be containerized using Docker.
 
-Build the image:
+Build the backend image:
 
 ```bash
 docker build -t algoforge-api .
@@ -399,47 +381,95 @@ Run the container:
 docker run -p 8080:8080 algoforge-api
 ```
 
-For production deployments, environment variables should be provided through the hosting platform rather than hardcoded in the image.
+For local multi-container development:
+
+```bash
+docker compose up --build
+```
+
+Production secrets should be supplied through environment configuration rather than being embedded in Docker images.
 
 ---
 
-# 🔐 Security
+# 🌐 Production Deployment
 
-Security is an important part of AlgoForge because the platform executes user-submitted source code.
+AlgoForge uses a containerized production architecture.
 
-Current security-related components include:
+## Production Infrastructure
 
-* JWT authentication
-* API rate limiting
-* Centralized exception handling
-* Environment-based configuration
-* Containerized backend deployment
-* External code execution through Judge0
+| Service                   | Purpose                  |
+| ------------------------- | ------------------------ |
+| GitHub                    | Source code repository   |
+| GitHub Actions            | CI/CD automation         |
+| GitHub Container Registry | Container image registry |
+| Render                    | Production API hosting   |
+| PostgreSQL                | Production database      |
+| Docker                    | Backend containerization |
 
-### Security considerations
+### Deployment Flow
 
-User-submitted code should never be executed directly inside the AlgoForge API process.
+```text
+Developer
+    │
+    ▼
+GitHub Repository
+    │
+    ▼
+GitHub Actions
+    │
+    ├── Build
+    ├── Test
+    └── Docker Build
+            │
+            ▼
+GitHub Container Registry
+            │
+            ▼
+         Render
+            │
+            ▼
+AlgoForge ASP.NET Core API
+            │
+            ├───────────────┐
+            ▼               ▼
+       PostgreSQL       External Services
+                        ├── Judge0
+                        └── AI Provider
+```
 
-Code execution is delegated to the Judge0 execution environment.
+The AlgoForge backend is deployed as a Docker-based ASP.NET Core application on **Render**.
 
-Sensitive values such as:
+The repository contains:
 
-* Database credentials
+```text
+render.yaml
+```
+
+which keeps the Render deployment configuration version-controlled alongside the application source code.
+
+---
+
+# 🔐 Production Configuration
+
+Production secrets are not stored in the repository.
+
+Examples include:
+
+* PostgreSQL connection string
 * JWT secrets
-* AI API keys
+* AI provider credentials
 * Judge0 credentials
+* Other service credentials
 
-must be stored using environment variables or secure secret management.
+These values are supplied through the production environment configuration.
 
-For security-related issues, see:
-
-`SECURITY.md`
+Sensitive credentials must never be committed to Git.
 
 ---
 
 # 🧪 Testing
 
-The backend contains separate test projects:
+The backend contains separate testing projects:
 
 ```text
 backend/tests/
@@ -447,13 +477,103 @@ backend/tests/
 └── AlgoForge.IntegrationTests/
 ```
 
-Run backend tests with:
+Run all backend tests:
 
 ```bash
 dotnet test
 ```
 
-Testing is an ongoing part of the project's development and will continue to expand as new application features are introduced.
+Build the backend:
+
+```bash
+dotnet build
+```
+
+Testing coverage will continue to expand as the platform evolves.
+
+---
+
+# 📡 API
+
+The backend exposes a REST API through ASP.NET Core.
+
+Major API areas include:
+
+```text
+Authentication
+Questions
+Categories
+Submissions
+Contests
+Leaderboard
+Profile
+AI
+```
+
+The API implementation is located under:
+
+```text
+backend/src/AlgoForge.API
+```
+
+---
+
+# 📖 Swagger / OpenAPI
+
+During development, Swagger/OpenAPI is available through the ASP.NET Core API.
+
+After starting the backend, open:
+
+```text
+https://localhost:{port}/swagger
+```
+
+Swagger can be used to:
+
+* Explore endpoints
+* Inspect request models
+* Inspect response models
+* Test API operations
+* Test authenticated endpoints
+
+---
+
+# 🔒 Security
+
+Security is a major consideration because AlgoForge processes authentication data and user-submitted source code.
+
+Current security-related mechanisms include:
+
+* JWT authentication
+* Password hashing
+* API rate limiting
+* Centralized exception handling
+* Environment-based secrets
+* External code execution architecture
+* Docker-based backend deployment
+
+### Untrusted Code
+
+User-submitted source code should never be executed directly inside the AlgoForge API process.
+
+Code execution is delegated to an external execution environment such as Judge0.
+
+This separation reduces the risk associated with executing untrusted source code inside the main application.
+
+---
+
+# ⏱️ Rate Limiting
+
+The API includes rate-limiting mechanisms to protect backend resources.
+
+Rate limiting is particularly important for:
+
+* Authentication
+* Code submissions
+* AI requests
+* Resource-intensive operations
+
+Future improvements include more granular per-user and per-operation quotas.
 
 ---
 
@@ -461,98 +581,103 @@ Testing is an ongoing part of the project's development and will continue to exp
 
 AlgoForge uses GitHub Actions for automated development workflows.
 
-The CI pipeline is responsible for tasks such as:
+The CI/CD architecture is designed around:
 
 ```text
-Push / Pull Request
-        │
-        ▼
-Restore dependencies
-        │
-        ▼
-Build backend
-        │
-        ▼
-Build desktop
-        │
-        ▼
-Build Docker image
-        │
-        ▼
-Publish container
+Git Push / Pull Request
+          │
+          ▼
+     GitHub Actions
+          │
+          ├── Restore
+          ├── Build
+          ├── Test
+          └── Docker Build
+                    │
+                    ▼
+          GitHub Container Registry
+                    │
+                    ▼
+                 Render
 ```
 
-The project uses GitHub Container Registry for container images and supports container-based deployment.
-
----
-
-# 🌐 Deployment
-
-The backend is designed to run as a containerized ASP.NET Core application.
-
-The repository includes deployment configuration for Render.
-
-Production deployments should provide secrets through environment configuration rather than committing credentials to source control.
+The CI/CD pipeline will continue to evolve as additional testing and security checks are introduced.
 
 ---
 
 # 🗺️ Roadmap
 
-AlgoForge is actively evolving.
-
-### 🔐 Security
+## 🔐 Authentication & Security
 
 * [ ] Refresh token rotation
 * [ ] Secure Electron token storage
 * [ ] Session management
+* [ ] Logout from all sessions
 * [ ] Email verification
 * [ ] Password reset
 * [ ] Production CORS policy
-* [ ] Advanced code-execution abuse protection
+* [ ] Advanced submission abuse protection
+* [ ] AI usage quotas
+* [ ] Security audit logging
 
-### 🧪 Testing
+## 🧪 Testing
 
 * [ ] Expand unit test coverage
 * [ ] Expand integration test coverage
-* [ ] Authentication tests
-* [ ] Submission tests
-* [ ] Contest tests
+* [ ] Authentication test suite
+* [ ] Submission test suite
+* [ ] Contest test suite
+* [ ] Rate-limit tests
+* [ ] Security-focused integration tests
 * [ ] CI test enforcement
 
-### 📊 User Experience
+## 📊 User Experience
 
 * [ ] Advanced user statistics
 * [ ] Learning progress tracking
+* [ ] Daily challenge
 * [ ] Streak system
 * [ ] Achievement system
 * [ ] Advanced question filtering
 * [ ] Pagination improvements
 
-### 🤖 AI
+## 🤖 AI
 
-* [ ] Improved AI tutoring flow
+* [ ] Improved AI tutor
 * [ ] Hint system
 * [ ] Code review mode
+* [ ] Complexity analysis
 * [ ] AI usage quotas
 * [ ] AI usage analytics
 * [ ] Personalized question recommendations
 
-### 🛠️ Administration
+## 🏆 Competitive Programming
+
+* [ ] Advanced contest functionality
+* [ ] Improved contest rankings
+* [ ] Contest statistics
+* [ ] Submission analytics
+* [ ] Anti-cheat mechanisms
+
+## 🛠️ Administration
 
 * [ ] Admin dashboard
 * [ ] User management
 * [ ] Question management
-* [ ] Test case management
+* [ ] Test-case management
 * [ ] Contest management
 * [ ] Submission monitoring
+* [ ] AI usage monitoring
 * [ ] System health monitoring
 
-### 🚀 Desktop
+## 🖥️ Desktop
 
 * [ ] Secure credential storage
 * [ ] Automatic application updates
 * [ ] GitHub Releases integration
-* [ ] Improved offline/connection handling
+* [ ] Improved offline handling
+* [ ] Connection status UI
+* [ ] Crash reporting
 
 ---
 
@@ -560,7 +685,7 @@ AlgoForge is actively evolving.
 
 AlgoForge aims to become more than a traditional coding challenge application.
 
-The long-term goal is to combine:
+The long-term vision is to combine:
 
 ```text
 Algorithm Practice
@@ -578,17 +703,48 @@ into a single developer-focused learning platform.
 
 ---
 
+# 🧠 Development Philosophy
+
+AlgoForge is being developed around several core principles.
+
+### Clean Architecture
+
+Keep business logic independent from infrastructure and external services.
+
+### Separation of Concerns
+
+Each application module should have a clearly defined responsibility.
+
+### Testability
+
+Application logic should be independently testable.
+
+### Security by Design
+
+User input, credentials and submitted source code are treated as potentially sensitive or untrusted.
+
+### Maintainability
+
+Prefer modular and readable implementations over unnecessary complexity.
+
+### Scalability
+
+The architecture should allow individual services and modules to evolve without requiring a complete rewrite.
+
+---
+
 # 🤝 Contributing
 
 Contributions, suggestions and improvements are welcome.
 
-Before contributing:
+### Development workflow
 
 1. Fork the repository.
 2. Create a feature branch.
-3. Implement your changes.
-4. Add or update tests where appropriate.
-5. Open a pull request.
+3. Implement the change.
+4. Add or update tests.
+5. Verify the build.
+6. Open a pull request.
 
 Example:
 
@@ -604,11 +760,32 @@ git push origin feature/my-feature
 
 ---
 
-# 📜 License
+# 📚 Documentation
 
-This project currently does not define a finalized open-source license.
+Additional documentation will be maintained under the `docs` directory.
 
-A license will be added before the project is officially distributed as an open-source project.
+Planned documentation includes:
+
+```text
+docs/
+├── ARCHITECTURE.md
+├── API.md
+└── DEVELOPMENT.md
+```
+
+Security-related information will be documented separately in:
+
+```text
+SECURITY.md
+```
+
+---
+
+# 📄 License
+
+The project's licensing model has not yet been finalized.
+
+A formal open-source license will be added before official open-source distribution.
 
 ---
 
@@ -618,12 +795,38 @@ A license will be added before the project is officially distributed as an open-
 
 Software Engineering Student & Developer
 
-GitHub: [@ufukcoz](https://github.com/ufukcoz)
+GitHub:
+
+https://github.com/ufukcoz
 
 ---
 
-# ⭐ Support
+# ⭐ Support the Project
 
 If you find AlgoForge interesting, consider giving the repository a ⭐ on GitHub.
 
-The project is actively evolving and new features, security improvements and architectural improvements are continuously being developed.
+AlgoForge is actively evolving toward a production-ready algorithm learning and competitive programming platform.
+
+---
+
+## 📌 Project Status
+
+**Status:** Active Development
+
+**Backend:** ASP.NET Core
+
+**Desktop:** Electron + React + TypeScript
+
+**Database:** PostgreSQL
+
+**Code Execution:** Judge0
+
+**AI:** AI Provider
+
+**Containerization:** Docker
+
+**CI/CD:** GitHub Actions
+
+**Container Registry:** GitHub Container Registry
+
+**Production Hosting:** Render
