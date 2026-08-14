@@ -13,7 +13,7 @@ Built with **ASP.NET Core 8**, **Entity Framework Core** and **PostgreSQL**.
 
 The backend follows a layered architecture based on Clean Architecture principles.
 
-```text
+
 AlgoForge.API
       │
       ▼
