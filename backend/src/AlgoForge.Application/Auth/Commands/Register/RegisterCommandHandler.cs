@@ -26,50 +26,90 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
         _configuration = configuration;
     }
 
-    public async Task<RegisterResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterResult> Handle(
+        RegisterCommand request,
+        CancellationToken cancellationToken)
     {
         var emailExists = await _context.Users
             .AnyAsync(u => u.Email == request.Email, cancellationToken);
 
         if (emailExists)
-            throw new InvalidOperationException("Bu e-posta adresi zaten kayıtlı.");
+            throw new InvalidOperationException(
+                "Bu e-posta adresi zaten kayıtlı.");
+
+        // Password strength validation
+        if (request.Password.Length < 8 ||
+            !request.Password.Any(char.IsUpper) ||
+            !request.Password.Any(char.IsLower) ||
+            !request.Password.Any(char.IsDigit))
+        {
+            throw new ArgumentException(
+                "Şifre en az 8 karakter, bir büyük harf, bir küçük harf ve bir rakam içermelidir.");
+        }
 
         var passwordHash = _passwordHasher.Hash(request.Password);
-        var user = User.Create(request.Username, request.Email, passwordHash);
+
+        // New users are always created with the default User role.
+        var user = User.Create(
+            request.Username,
+            request.Email,
+            passwordHash);
 
         _context.Users.Add(user);
 
-        // Dogrulama tokeni 64 rastgele byte'tan uretiliyor - tahmin edilemez, 24 saat gecerli.
-        var tokenValue = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48))
-            .Replace('+', '-').Replace('/', '_').TrimEnd('='); // URL'de sorun cikarmasin diye base64url'e cevir
+        // Verification token is generated from 48 random bytes.
+        // The token is unpredictable and valid for 24 hours.
+        var tokenValue = Convert.ToBase64String(
+                RandomNumberGenerator.GetBytes(48))
+            .Replace('+', '-')
+            .Replace('/', '_')
+            .TrimEnd('=');
 
-        var verificationToken = EmailVerificationToken.Create(user.Id, tokenValue, DateTime.UtcNow.AddHours(24));
+        var verificationToken = EmailVerificationToken.Create(
+            user.Id,
+            tokenValue,
+            DateTime.UtcNow.AddHours(24));
+
         _context.EmailVerificationTokens.Add(verificationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        // Email gonderimi basarisiz olsa bile kaydin kendisi bozulmasin - kullanici
-        // hesabini olusturabilsin, istersen sonradan "dogrulama emailini tekrar gonder" ile dener.
+        // Email delivery failure should not cancel account creation.
+        // The user can request another verification email later.
         try
         {
-            var baseUrl = _configuration["AppBaseUrl"] ?? "http://localhost:5000";
-            var verificationLink = $"{baseUrl}/api/auth/verify-email?token={tokenValue}";
+            var baseUrl = _configuration["AppBaseUrl"]
+                          ?? "http://localhost:5000";
+
+            var verificationLink =
+                $"{baseUrl}/api/auth/verify-email?token={tokenValue}";
 
             var htmlBody = $"""
-                <h2>AlgoForge'a hos geldin, {user.Username}!</h2>
-                <p>Hesabini dogrulamak icin asagidaki linke tikla:</p>
-                <p><a href="{verificationLink}">E-postami dogrula</a></p>
-                <p>Bu link 24 saat gecerlidir.</p>
+                <h2>AlgoForge'a hoş geldin, {user.Username}!</h2>
+                <p>Hesabını doğrulamak için aşağıdaki linke tıkla:</p>
+                <p>
+                    <a href="{verificationLink}">
+                        E-postamı doğrula
+                    </a>
+                </p>
+                <p>Bu link 24 saat geçerlidir.</p>
                 """;
 
-            await _emailService.SendEmailAsync(user.Email, "AlgoForge - E-postani dogrula", htmlBody, cancellationToken);
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "AlgoForge - E-postanı doğrula",
+                htmlBody,
+                cancellationToken);
         }
         catch
         {
-            // Sessizce yut - kayit islemi email gonderiminin basarisina bagli olmamali.
-            // TODO: Bunu bir logger'a yazip izlemek ileride eklenebilir.
+            // Email delivery failure does not prevent registration.
+            // TODO: Add logging here in the future.
         }
 
-        return new RegisterResult(user.Id, user.Username, user.Email);
+        return new RegisterResult(
+            user.Id,
+            user.Username,
+            user.Email);
     }
 }
