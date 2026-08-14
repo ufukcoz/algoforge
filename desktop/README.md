@@ -32,7 +32,7 @@ The application allows users to browse problems, write code, submit solutions an
 
 ## 🏗️ Architecture
 
-```text
+
 AlgoForge Desktop
         │
         ├── Electron
