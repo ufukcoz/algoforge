@@ -5,9 +5,14 @@
 //
 // Node 18+ gerekli (yerleşik fetch kullanıyor). Node sürümünü kontrol etmek için: node -v
 
-const API_BASE = "https://algoforge-api-b3b9.onrender.com";
-const ADMIN_EMAIL = "***REMOVED***";
-const ADMIN_PASSWORD = "***REMOVED***";
+const API_BASE = process.env.API_BASE_URL || "https://algoforge-api-b3b9.onrender.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  console.error("ADMIN_EMAIL ve ADMIN_PASSWORD environment variable olarak tanımlanmalı.");
+  process.exit(1);
+}
 
 const fs = require("fs");
 const path = require("path");
