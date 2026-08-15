@@ -1,97 +1,87 @@
 name: CI
 
 on:
-push:
-branches: [main]
-pull_request:
-branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-backend-build:
-name: Backend build and test
-runs-on: ubuntu-latest
+  backend-build:
+    name: Backend build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-```
-steps:
-  - uses: actions/checkout@v4
+      - name: .NET 8 kur
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
-  - name: .NET 8 kur
-    uses: actions/setup-dotnet@v4
-    with:
-      dotnet-version: "8.0.x"
+      - name: Restore
+        run: dotnet restore backend/AlgoForge.sln
 
-  - name: Restore
-    run: dotnet restore backend/AlgoForge.sln
+      - name: Build
+        run: dotnet build backend/AlgoForge.sln --no-restore --configuration Release
 
-  - name: Build
-    run: dotnet build backend/AlgoForge.sln --no-restore --configuration Release
+      - name: Test
+        run: dotnet test backend/AlgoForge.sln --no-build --configuration Release
 
-  - name: Test
-    run: dotnet test backend/AlgoForge.sln --no-build --configuration Release
-```
+  desktop-build:
+    name: Desktop build and installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
 
-desktop-build:
-name: Desktop build and installer
-runs-on: windows-latest
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: desktop/package-lock.json
 
-```
-steps:
-  - uses: actions/checkout@v4
+      - name: npm install
+        working-directory: desktop
+        run: npm ci
 
-  - name: Node.js kur
-    uses: actions/setup-node@v4
-    with:
-      node-version: "20"
-      cache: "npm"
-      cache-dependency-path: desktop/package-lock.json
+      - name: TypeScript + Vite build
+        working-directory: desktop
+        run: npm run build
 
-  - name: npm install
-    working-directory: desktop
-    run: npm ci
+      - name: Electron installer build
+        working-directory: desktop
+        run: npm run electron:build
 
-  - name: TypeScript + Vite build
-    working-directory: desktop
-    run: npm run build
+      - name: Installer artifact yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: AlgoForge-Windows-Installer
+          path: desktop/release/*
+          if-no-files-found: error
+          retention-days: 7
 
-  - name: Electron installer build
-    working-directory: desktop
-    run: npm run electron:build
+  docker-publish:
+    name: Docker image yayinla (ghcr.io)
+    needs: backend-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Installer artifact yükle
-    uses: actions/upload-artifact@v4
-    with:
-      name: AlgoForge-Windows-Installer
-      path: desktop/release/*
-      if-no-files-found: error
-      retention-days: 7
-```
+      - name: GitHub Container Registry'ye giris yap
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-docker-publish:
-name: Docker image yayinla (ghcr.io)
-needs: backend-build
-if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-runs-on: ubuntu-latest
-
-```
-permissions:
-  contents: read
-  packages: write
-
-steps:
-  - uses: actions/checkout@v4
-
-  - name: GitHub Container Registry'ye giris yap
-    uses: docker/login-action@v3
-    with:
-      registry: ghcr.io
-      username: ${{ github.actor }}
-      password: ${{ secrets.GITHUB_TOKEN }}
-
-  - name: Build ve push
-    uses: docker/build-push-action@v5
-    with:
-      context: ./backend
-      file: ./backend/Dockerfile
-      push: true
-      tags: ghcr.io/${{ github.repository_owner }}/algoforge-api:latest
-```
+      - name: Build ve push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/algoforge-api:latest
