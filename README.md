@@ -1,57 +1,184 @@
 # AlgoForge
 
-AlgoForge is an algorithm learning and competitive programming platform.
+AlgoForge is an algorithm learning and competitive programming platform with a desktop application.
 
-The project provides a desktop application where users can practice programming problems, write code, submit solutions and use AI-assisted learning features.
+Users can browse algorithm problems, write code with Monaco Editor, submit solutions, participate in contests, view leaderboards and use AI-assisted learning features.
 
-## 🚀 Features
+## Features
 
-- Algorithm and programming questions
-- Code editor with Monaco Editor
-- Code submissions
-- Code execution through Judge0
-- User authentication
-- Contests
-- Leaderboard
-- AI assistant
-- Desktop application
+* Algorithm and data-structure questions
+* Problem browsing and filtering
+* Monaco Editor
+* Code submissions
+* Code execution through Judge0
+* User authentication
+* Role-based authorization
+* Contests
+* Public and private contest access control
+* Contest leaderboard
+* Global leaderboard
+* User profile
+* AI assistant
+* Desktop application
+* PostgreSQL persistence
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
-                    AlgoForge Desktop
-                  Electron + React
-                          │
-                          │ REST API
-                          ▼
-                 ASP.NET Core Web API
-                          │
-              ┌───────────┼───────────┐
-              ▼           ▼           ▼
-         PostgreSQL     Judge0      AI API
+                 AlgoForge Desktop
+              Electron + React
+                       │
+                       │ REST API
+                       ▼
+              ASP.NET Core 8 API
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+     PostgreSQL      Judge0      Gemini API
+```
 
-🛠️ Technologies
-Backend
-C#
-ASP.NET Core 8
-Entity Framework Core
+The backend is organized into separate layers:
+
+```text
+AlgoForge.API
+      │
+      ▼
+AlgoForge.Application
+      │
+      ▼
+AlgoForge.Domain
+      ▲
+      │
+AlgoForge.Infrastructure
+      │
+      ▼
 PostgreSQL
-JWT Authentication
-MediatR
-Desktop
-Electron
-React
-TypeScript
-Vite
-Monaco Editor
-Electron Builder
-Infrastructure
-Docker
-GitHub Actions
+```
+
+## Technologies
+
+### Backend
+
+* C#
+* ASP.NET Core 8
+* Entity Framework Core
+* PostgreSQL
+* MediatR
+* JWT Authentication
+* BCrypt
+
+### Desktop
+
+* Electron
+* React
+* TypeScript
+* Vite
+* Monaco Editor
+* Electron Builder
+
+### External Services
+
+* Judge0
+* Google Gemini
+* Resend
+
+### Infrastructure
+
+* Docker
+* Render
+* GitHub Actions
+* GitHub Container Registry
+
+## Security
+
+The backend includes:
+
+* JWT authentication
+* Role-based authorization
+* BCrypt password hashing
+* Refresh-token hashing with SHA-256
+* Refresh-token rotation
+* Refresh-token family tracking
+* Refresh-token reuse detection
+* Private contest authorization
+* User-scoped submission access
+* API rate limiting
+* Security response headers
+* Centralized exception handling
+* Production secrets supplied through environment configuration
+
+## Testing
+
+The repository contains separate unit and integration test projects:
+
+```text
+backend/tests/
+├── AlgoForge.UnitTests/
+└── AlgoForge.IntegrationTests/
+```
+
+The tests cover authentication, refresh-token behavior, contest authorization, leaderboard access, role authorization, submission ownership, rate limiting, security headers, CORS behavior and health checks.
+
+Run the backend tests with:
+
+```bash
+dotnet test
+```
+
+## Deployment
+
+The backend is deployed with Docker on Render and uses PostgreSQL for persistent storage.
+
+```text
+GitHub
+   │
+   ▼
 Render
+   │
+   ▼
+Dockerized ASP.NET Core API
+   │
+   ▼
 PostgreSQL
+```
 
-📂 Project Structure
+The API exposes:
+
+```text
+GET /health
+```
+
+for service health checking.
+
+## Local Development
+
+### Backend
+
+```bash
+cd backend
+dotnet restore
+dotnet build
+dotnet run --project src/AlgoForge.API
+```
+
+### Desktop
+
+```bash
+cd desktop
+npm install
+npm run electron:dev
+```
+
+### Docker
+
+```bash
+cd backend
+docker compose up -d
+```
+
+## Project Structure
+
+```text
 AlgoForge/
 │
 ├── backend/
@@ -62,6 +189,8 @@ AlgoForge/
 │   │   └── AlgoForge.Infrastructure/
 │   │
 │   └── tests/
+│       ├── AlgoForge.UnitTests/
+│       └── AlgoForge.IntegrationTests/
 │
 ├── desktop/
 │   ├── src/
@@ -73,59 +202,16 @@ AlgoForge/
 ├── questions.json
 ├── render.yaml
 └── README.md
+```
 
-🌐 Deployment
+## Project Status
 
-The backend is deployed on Render using Docker.
+AlgoForge is under active development.
 
-The production environment uses PostgreSQL for persistent data.
+The current repository contains the core problem-solving, submission, authentication, contest, leaderboard, AI and desktop functionality together with automated testing and deployment infrastructure.
 
-GitHub
-   │
-   ▼
-Render
-   │
-   ▼
-Dockerized ASP.NET Core API
-   │
-   ▼
-PostgreSQL
+## Author
 
-💻 Local Development
-Backend
-cd backend
-dotnet restore
-dotnet build
-dotnet run --project src/AlgoForge.API
-Desktop
-cd desktop
-npm install
-npm run electron:dev
+**Ufuk Çöz**
 
-🧪 Tests
-
-Backend test projects are located under:
-
-backend/tests/
-
-Run tests with:
-
-dotnet test
-
-🗺️ Roadmap
-Improve authentication and session management
-Expand automated testing
-Improve AI assistant
-Improve contest features
-Add user progress features
-Improve desktop application
-
-📌 Status
-
-AlgoForge is currently under active development.
-
-👨‍💻 Author
-
-Ufuk Çöz
-
-GitHub: https://github.com/ufukcoz/algoforge
+GitHub: https://github.com/ufukcoz
