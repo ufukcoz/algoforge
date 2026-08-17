@@ -1,4 +1,4 @@
-using AlgoForge.Application.Common.Interfaces;
+﻿using AlgoForge.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
     public async Task<Unit> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
         var token = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken, cancellationToken);
+            .FirstOrDefaultAsync(rt => rt.TokenHash == AlgoForge.Domain.Entities.RefreshToken.HashToken(request.RefreshToken), cancellationToken);
 
         // Token zaten yoksa veya iptal edilmisse sessizce basarili donuyoruz -
         // logout islemi idempotent olmali, hata firlatmaya gerek yok.
@@ -28,3 +28,4 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
         return Unit.Value;
     }
 }
+

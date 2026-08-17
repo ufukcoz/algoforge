@@ -1,4 +1,4 @@
-using AlgoForge.Application.Common.Interfaces;
+﻿using AlgoForge.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
     public async Task<RefreshTokenResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var existingToken = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken, cancellationToken);
+            .FirstOrDefaultAsync(rt => rt.TokenHash == AlgoForge.Domain.Entities.RefreshToken.HashToken(request.RefreshToken), cancellationToken);
 
         if (existingToken is null || !existingToken.IsActive(DateTime.UtcNow))
             throw new UnauthorizedAccessException("Refresh token gecersiz veya suresi dolmus, tekrar giris yapman gerekiyor.");
@@ -43,3 +43,4 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         return new RefreshTokenResult(newAccessToken, newRefreshTokenValue);
     }
 }
+

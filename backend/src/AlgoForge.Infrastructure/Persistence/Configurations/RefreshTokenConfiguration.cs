@@ -1,4 +1,4 @@
-using AlgoForge.Domain.Entities;
+﻿using AlgoForge.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,10 +11,13 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder.ToTable("RefreshTokens");
         builder.HasKey(rt => rt.Id);
 
-        builder.Property(rt => rt.Token).IsRequired().HasMaxLength(200);
+        builder.Property(rt => rt.TokenHash)
+            .IsRequired()
+            .HasMaxLength(64);
+
         builder.Property(rt => rt.ExpiresAt).IsRequired();
 
-        builder.HasIndex(rt => rt.Token).IsUnique();
+        builder.HasIndex(rt => rt.TokenHash).IsUnique();
         builder.HasIndex(rt => rt.UserId);
     }
 }
