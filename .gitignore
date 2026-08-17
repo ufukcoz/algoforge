@@ -12,3 +12,4 @@ backend/src/AlgoForge.API/appsettings.Development.json
 
 # Local backup repositories
 algoforge-backup.git/
+backend/src/AlgoForge.API/appsettings.Development.json

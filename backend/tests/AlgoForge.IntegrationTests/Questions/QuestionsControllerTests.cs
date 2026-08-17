@@ -12,8 +12,7 @@ public class QuestionsControllerTests
     private readonly CustomWebApplicationFactory _factory;
     private readonly HttpClient _client;
 
-    public QuestionsControllerTests(
-        CustomWebApplicationFactory factory)
+    public QuestionsControllerTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
         _client = factory.CreateClient();
@@ -67,6 +66,29 @@ public class QuestionsControllerTests
         Assert.Equal(
             "camera=(), microphone=(), geolocation=()",
             response.Headers.GetValues("Permissions-Policy").Single());
+    }
+
+    [Fact]
+    public async Task Cors_ShouldAllowConfiguredOrigin()
+    {
+        using var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            "/api/questions");
+
+        request.Headers.Add(
+            "Origin",
+            "https://example.com");
+
+        var response = await _client.SendAsync(request);
+
+        Assert.True(
+            response.Headers.TryGetValues(
+                "Access-Control-Allow-Origin",
+                out var values));
+
+        Assert.Equal(
+            "*",
+            values.Single());
     }
 
     [Fact]
