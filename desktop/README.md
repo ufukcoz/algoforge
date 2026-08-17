@@ -1,38 +1,33 @@
-
----
-
-## 3. `desktop/README.md`
-
-```markdown
 # AlgoForge Desktop
 
 Desktop application of the AlgoForge algorithm learning platform.
 
-The application allows users to browse problems, write code, submit solutions and use the platform's learning features.
+The application communicates with the AlgoForge backend through REST APIs and does not connect directly to PostgreSQL.
 
-## ✨ Features
+## Features
 
-- Algorithm questions
-- Monaco code editor
-- Code submissions
-- Contest features
-- Leaderboard
-- User profile
-- AI assistant
-- Backend API integration
+* Algorithm questions
+* Problem browsing
+* Monaco code editor
+* Code submissions
+* Contest features
+* Leaderboard
+* User profile
+* AI assistant
+* Backend API integration
 
-## 🛠️ Technologies
+## Technologies
 
-- Electron
-- React
-- TypeScript
-- Vite
-- Monaco Editor
-- Electron Builder
+* Electron
+* React
+* TypeScript
+* Vite
+* Monaco Editor
+* Electron Builder
 
-## 🏗️ Architecture
+## Architecture
 
-
+```text
 AlgoForge Desktop
         │
         ├── Electron
@@ -41,14 +36,19 @@ AlgoForge Desktop
                 │
                 ▼
           AlgoForge API
+                │
+                ▼
+       ASP.NET Core Backend
+```
 
 The desktop application communicates with the backend through REST APIs.
 
 The desktop application does not connect directly to PostgreSQL.
 
-📂 Structure
+## Project Structure
+
+```text
 desktop/
-│
 ├── src/
 │   ├── components/
 │   ├── pages/
@@ -59,33 +59,58 @@ desktop/
 ├── public/
 ├── package.json
 └── README.md
-🚀 Installation
+```
+
+## Installation
 
 From the repository root:
 
+```bash
 cd desktop
 npm install
-🧑‍💻 Development
+```
 
-Run the development environment:
+## Development
 
+Run the desktop development environment:
+
+```bash
 npm run electron:dev
-📦 Build
+```
 
-Build the application:
+## Build
 
+Build the desktop application:
+
+```bash
 npm run electron:build
+```
 
 The packaged application is generated according to the Electron Builder configuration.
 
-🌐 Backend
+## Backend
 
 The desktop application communicates with the AlgoForge ASP.NET Core API.
 
+```text
 AlgoForge Desktop
         │
         ▼
-   REST API
+      REST API
         │
         ▼
 ASP.NET Core Backend
+```
+
+The production API URL is configured through the desktop application's API configuration rather than through a direct database connection.
+
+## CI
+
+The desktop project is built through GitHub Actions.
+
+The CI workflow performs:
+
+* npm dependency installation
+* TypeScript/Vite build
+* Electron Builder packaging
+* Windows installer artifact upload
