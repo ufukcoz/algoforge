@@ -16,19 +16,33 @@ services:
         fromDatabase:
           name: algoforge-db
           property: connectionString
+
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-      # Bu ikisi Render dashboard'unda elle girilmeli (sync: false = Render bunlari
-      # otomatik doldurmaz, senden ister) - gizli degerleri repo'ya yazmamak icin.
+
       - key: Jwt__Secret
         sync: false
+
       - key: Gemini__ApiKey
         sync: false
+
+      - key: Resend__ApiKey
+        sync: false
+
+      - key: Resend__FromEmail
+        value: onboarding@resend.dev
+
+      - key: AppBaseUrl
+        value: https://algoforge-api-b3b9.onrender.com
+
       - key: Jwt__Issuer
         value: AlgoForge.API
+
       - key: Jwt__Audience
         value: AlgoForge.Client
+
       - key: Judge0__BaseUrl
         value: https://ce.judge0.com/
+
       - key: Gemini__Model
         value: gemini-flash-latest
