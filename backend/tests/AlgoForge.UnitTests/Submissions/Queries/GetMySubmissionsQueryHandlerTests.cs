@@ -1,4 +1,4 @@
-using AlgoForge.Application.Submissions.Queries.GetMySubmissions;
+﻿using AlgoForge.Application.Submissions.Queries.GetMySubmissions;
 using AlgoForge.Domain.Entities;
 using AlgoForge.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -94,6 +94,91 @@ public class GetMySubmissionsQueryHandlerTests
         Assert.Equal(
             500,
             result[0].MemoryKb);
+    }
+
+    [Fact]
+    public async Task Handle_ShouldNeverReturnAnotherUsersSubmissions()
+    {
+        await using var context = new TestDbContext();
+
+        var category = Category.Create("Security");
+
+        var question = Question.Create(
+            "Authorization Test",
+            Difficulty.Easy,
+            "IDOR test question.",
+            category.Id);
+
+        var userA = User.Create(
+            "userA",
+            "userA@example.com",
+            "hash");
+
+        var userB = User.Create(
+            "userB",
+            "userB@example.com",
+            "hash");
+
+        context.Categories.Add(category);
+        context.Questions.Add(question);
+        context.Users.AddRange(userA, userB);
+
+        var userASubmission = Submission.Create(
+            userA.Id,
+            question.Id,
+            "csharp",
+            "user A code");
+
+        userASubmission.MarkResult(
+            SubmissionStatus.Accepted,
+            100,
+            200);
+
+        var userBSubmission = Submission.Create(
+            userB.Id,
+            question.Id,
+            "python",
+            "user B code");
+
+        userBSubmission.MarkResult(
+            SubmissionStatus.Accepted,
+            120,
+            220);
+
+        context.Submissions.AddRange(
+            userASubmission,
+            userBSubmission);
+
+        await context.SaveChangesAsync();
+
+        var handler = new GetMySubmissionsQueryHandler(context);
+
+        var userAResult = await handler.Handle(
+            new GetMySubmissionsQuery(userA.Id),
+            CancellationToken.None);
+
+        var userBResult = await handler.Handle(
+            new GetMySubmissionsQuery(userB.Id),
+            CancellationToken.None);
+
+        Assert.Single(userAResult);
+        Assert.Single(userBResult);
+
+        Assert.Equal(
+            userASubmission.Id,
+            userAResult[0].Id);
+
+        Assert.Equal(
+            userBSubmission.Id,
+            userBResult[0].Id);
+
+        Assert.DoesNotContain(
+            userAResult,
+            x => x.Id == userBSubmission.Id);
+
+        Assert.DoesNotContain(
+            userBResult,
+            x => x.Id == userASubmission.Id);
     }
 
     [Fact]
@@ -317,8 +402,6 @@ public class GetMySubmissionsQueryHandlerTests
 
         await context.SaveChangesAsync();
 
-        // BaseEntity.CreatedAt değerleri gerçek zamanlı üretildiği için
-        // EF'in oluşturduğu değerler arasında sıralama yapılır.
         var handler = new GetMySubmissionsQueryHandler(context);
 
         var result = await handler.Handle(
@@ -422,10 +505,10 @@ public class GetMySubmissionsQueryHandlerTests
         public DbSet<EmailVerificationToken> EmailVerificationTokens =>
             Set<EmailVerificationToken>();
 
-     public override Task<int> SaveChangesAsync(
-    CancellationToken cancellationToken = default)
-{
-    return base.SaveChangesAsync(cancellationToken);
-}
+        public override Task<int> SaveChangesAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }
