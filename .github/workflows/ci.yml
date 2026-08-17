@@ -1,4 +1,4 @@
-name: CI
+﻿name: CI
 
 on:
   push:
@@ -24,8 +24,11 @@ jobs:
       - name: Build
         run: dotnet build backend/AlgoForge.sln --no-restore --configuration Release
 
-      - name: Test
-        run: dotnet test backend/AlgoForge.sln --no-build --configuration Release
+      - name: Unit tests
+        run: dotnet test backend/tests/AlgoForge.UnitTests/AlgoForge.UnitTests.csproj --no-build --configuration Release
+
+      - name: Integration tests
+        run: dotnet test backend/tests/AlgoForge.IntegrationTests/AlgoForge.IntegrationTests.csproj --no-build --configuration Release
 
   desktop-build:
     name: Desktop build and installer
@@ -68,6 +71,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+
     steps:
       - uses: actions/checkout@v4
 

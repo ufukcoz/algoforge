@@ -2,5 +2,13 @@
 .env.*
 !.env.example
 *.lnk
+
 # Local development secrets
 backend/src/AlgoForge.API/appsettings.Development.json
+
+# Build artifacts
+**/bin/
+**/obj/
+
+# Local backup repositories
+algoforge-backup.git/

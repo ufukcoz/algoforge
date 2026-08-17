@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AlgoForge.Api\AlgoForge.Api.csproj" />
+    <ProjectReference Include="..\..\src\AlgoForge.API\AlgoForge.API.csproj" />
   </ItemGroup>
 
 </Project>
