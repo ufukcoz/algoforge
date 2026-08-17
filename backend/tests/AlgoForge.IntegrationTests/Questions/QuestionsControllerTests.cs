@@ -1,5 +1,6 @@
-using AlgoForge.IntegrationTests.Infrastructure;
+﻿using AlgoForge.IntegrationTests.Infrastructure;
 using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 using Xunit;
 
@@ -8,10 +9,13 @@ namespace AlgoForge.IntegrationTests.Questions;
 public class QuestionsControllerTests
     : IClassFixture<CustomWebApplicationFactory>
 {
+    private readonly CustomWebApplicationFactory _factory;
     private readonly HttpClient _client;
 
-    public QuestionsControllerTests(CustomWebApplicationFactory factory)
+    public QuestionsControllerTests(
+        CustomWebApplicationFactory factory)
     {
+        _factory = factory;
         _client = factory.CreateClient();
     }
 
@@ -38,6 +42,106 @@ public class QuestionsControllerTests
 
         using var document = JsonDocument.Parse(content);
 
-        Assert.Equal(JsonValueKind.Object, document.RootElement.ValueKind);
+        Assert.Equal(
+            JsonValueKind.Object,
+            document.RootElement.ValueKind);
+    }
+
+    [Fact]
+    public async Task CreateQuestion_ShouldReturnUnauthorized_WhenUserIsNotAuthenticated()
+    {
+        var request = new
+        {
+            Title = "Unauthorized Test",
+            Difficulty = "Easy",
+            Description = "Test question",
+            TimeLimitMs = 1000,
+            MemoryLimitMb = 128,
+            CategoryId = Guid.NewGuid()
+        };
+
+        var response = await _client.PostAsJsonAsync(
+            "/api/questions",
+            request);
+
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+    }
+
+    [Fact]
+    public async Task CreateQuestion_ShouldReturnForbidden_WhenAuthenticatedUserIsNotAdmin()
+    {
+        using var client = _factory.CreateClient();
+
+        client.DefaultRequestHeaders.Add(
+            "X-Test-User-Id",
+            Guid.NewGuid().ToString());
+
+        client.DefaultRequestHeaders.Add(
+            "X-Test-Role",
+            "User");
+
+        client.DefaultRequestHeaders.Add(
+            "X-Test-Username",
+            "normal-user");
+
+        var request = new
+        {
+            Title = "User Test",
+            Difficulty = "Easy",
+            Description = "Test question",
+            TimeLimitMs = 1000,
+            MemoryLimitMb = 128,
+            CategoryId = Guid.NewGuid()
+        };
+
+        var response = await client.PostAsJsonAsync(
+            "/api/questions",
+            request);
+
+        Assert.Equal(
+            HttpStatusCode.Forbidden,
+            response.StatusCode);
+    }
+
+    [Fact]
+    public async Task CreateQuestion_ShouldPassAuthorization_WhenUserIsAdmin()
+    {
+        using var client = _factory.CreateClient();
+
+        client.DefaultRequestHeaders.Add(
+            "X-Test-User-Id",
+            Guid.NewGuid().ToString());
+
+        client.DefaultRequestHeaders.Add(
+            "X-Test-Role",
+            "Admin");
+
+        client.DefaultRequestHeaders.Add(
+            "X-Test-Username",
+            "admin-user");
+
+        var request = new
+        {
+            Title = "Admin Test",
+            Difficulty = "Easy",
+            Description = "Test question",
+            TimeLimitMs = 1000,
+            MemoryLimitMb = 128,
+            CategoryId = Guid.NewGuid()
+        };
+
+        var response = await client.PostAsJsonAsync(
+            "/api/questions",
+            request);
+
+        Assert.NotEqual(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+
+        Assert.NotEqual(
+            HttpStatusCode.Forbidden,
+            response.StatusCode);
     }
 }
