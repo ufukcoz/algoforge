@@ -104,6 +104,7 @@ var app = builder.Build();
 // En basta olmali ki asagidaki tum middleware'lerden/controller'lardan gelen
 // exception'lari yakalayabilsin.
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<SecurityHeadersMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

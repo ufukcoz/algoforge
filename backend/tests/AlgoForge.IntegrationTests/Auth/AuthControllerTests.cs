@@ -39,6 +39,37 @@ public class AuthControllerTests
     }
 
     [Fact]
+    public async Task AuthRateLimit_ShouldEventuallyReturnTooManyRequests()
+    {
+        var responses = new List<HttpResponseMessage>();
+
+        for (var i = 0; i < 7; i++)
+        {
+            var suffix = Guid.NewGuid().ToString("N");
+
+            var response = await _client.PostAsJsonAsync(
+                "/api/auth/register",
+                new
+                {
+                    Username = $"ratelimit_{suffix}",
+                    Email = $"ratelimit_{suffix}@example.com",
+                    Password = "Test123!Password"
+                });
+
+            responses.Add(response);
+        }
+
+        Assert.Contains(
+            responses,
+            response => response.StatusCode == HttpStatusCode.TooManyRequests);
+
+        foreach (var response in responses)
+        {
+            response.Dispose();
+        }
+    }
+
+    [Fact]
     public async Task Refresh_ShouldRotateRefreshToken()
     {
         var suffix = Guid.NewGuid().ToString("N");
@@ -138,7 +169,6 @@ public class AuthControllerTests
 
         Assert.Equal(HttpStatusCode.OK, firstRefreshResponse.StatusCode);
 
-        // Eski refresh token tekrar kullanılıyor.
         var reuseResponse = await _client.PostAsJsonAsync(
             "/api/auth/refresh",
             new
@@ -160,4 +190,3 @@ public class AuthControllerTests
         string AccessToken,
         string RefreshToken);
 }
-
