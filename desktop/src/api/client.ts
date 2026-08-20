@@ -1,4 +1,4 @@
-// Backend API'nin adresi. Geliştirme sırasında local ASP.NET Core sunucusu.
+﻿// Backend API'nin adresi. GeliÅŸtirme sÄ±rasÄ±nda local ASP.NET Core sunucusu.
 // Vite build sirasinda VITE_API_BASE_URL ortam degiskeni verilirse onu kullanir,
 // verilmezse local gelistirme icin localhost:5000'e duser. Boylece ayni kod hem
 // local backend'e hem Render'daki canli API'ye baglanabilir - .env dosyasiyla degistirilir.
@@ -37,12 +37,12 @@ class ApiError extends Error {
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    let message = `İstek başarısız oldu (${response.status})`;
+    let message = `Ä°stek baÅŸarÄ±sÄ±z oldu (${response.status})`;
     try {
       const body = await response.json();
       message = body?.title ?? body?.message ?? message;
     } catch {
-      // JSON gövde yoksa varsayılan mesajı kullan
+      // JSON gÃ¶vde yoksa varsayÄ±lan mesajÄ± kullan
     }
     throw new ApiError(message, response.status);
   }
@@ -201,8 +201,6 @@ export interface ProfileData {
   emailVerified: boolean;
   xp: number;
   level: number;
-  country: string | null;
-  university: string | null;
   memberSince: string;
   totalSubmissions: number;
   acceptedSubmissions: number;
@@ -305,7 +303,7 @@ export async function joinContest(
       const body = await response.json();
       message = body?.title ?? body?.message ?? message;
     } catch {
-      // JSON gövde yoksa varsayılan mesajı kullan
+      // JSON gÃ¶vde yoksa varsayÄ±lan mesajÄ± kullan
     }
     throw new Error(message);
   }
@@ -385,3 +383,4 @@ export async function resendVerificationEmail(accessToken: string): Promise<void
     throw new Error('Dogrulama emaili gonderilemedi.');
   }
 }
+
