@@ -50,8 +50,6 @@ export default function ProfilePage() {
 
       <div style={styles.metaCard}>
         <MetaRow label="uye olma tarihi" value={new Date(profile.memberSince).toLocaleDateString('tr-TR')} />
-        <MetaRow label="ulke" value={profile.country ?? '-'} />
-        <MetaRow label="universite" value={profile.university ?? '-'} />
       </div>
     </div>
   );
